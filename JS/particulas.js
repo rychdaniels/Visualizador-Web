@@ -147,14 +147,21 @@ function Particulas() {
     //console.log(objParticulas.trayso);
     objParticulas.animate();
   }
+  const play = document.getElementById('controlPausa');
+
+  play.addEventListener('click', function () {
+    if (play.firstElementChild.className === 'fa fa-play') {
+      document.getElementById('play').removeAttribute('class');
+      document.getElementById('play').setAttribute('class', 'fa fa-pause-circle');
+    } else {
+      document.getElementById('play').removeAttribute('class');
+      document.getElementById('play').setAttribute('class', 'fa fa-play');
+    }
+
+  });
   //pausa la animacion
   this.pause = function () {
     if (objParticulas.play == true) {
-      const play = document.getElementById('controlPausa');
-      play.addEventListener('click', function () {
-
-        document.getElementById("controlPausa").className = "fa fa-backward";
-      });
       objParticulas.play = false;
 
     } else {
