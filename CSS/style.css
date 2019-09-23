@@ -139,23 +139,26 @@ body {
 }
 
 
-#controlPausa{
+.botonera #controlPausa{
   position: absolute;  
-  top: 700px;
+  top: 730px;
   left: 500px;
+  visibility: hidden;
 }
 
-#controlAvanza{
+.botonera #controlAvanza{
   position: absolute;  
-  top: 700px;
+  top: 730px;
   left: 600px;  
+  visibility: hidden;
+  
 }
 
-#controlRegresa{
+.botonera #controlRegresa{
   position: absolute;
-  top: 700px;
+  top: 730px;
   left: 385px; 
-  
+  visibility: hidden;
 } 
 
 #voronoiMenu, #porosMenu {

@@ -45,6 +45,10 @@ document.getElementById('exampleInputFile').onchange = function () {
       //muestra el menu para voronoi
       $('#MenuVoronoi').css({ "visibility": "visible", "height": "300px", "width": "auto" })
       $('#voronoiMenu').css({ "visibility": "visible" })
+      $('#controlAvanza').css({ "visibility": "hidden" })
+      $('#controlPausa').css({ "visibility": "hidden" })
+      $('#controlRegresa').css({ "visibility": "hidden" })
+
 
     } else if (vsym.json.hasOwnProperty('particles')) {
       if (vsym.json.type == "2D") {
@@ -55,12 +59,18 @@ document.getElementById('exampleInputFile').onchange = function () {
 
       $('#MenuParticulas').css({ "visibility": "visible", "height": "300px", "width": "auto" })
       $('#particulasMenu').css({ "visibility": "visible" })
+      $('#controlAvanza').css({ "visibility": "visible" })
+      $('#controlPausa').css({ "visibility": "visible" })
+      $('#controlRegresa').css({ "visibility": "visible" })
 
     } else if (vsym.json.hasOwnProperty('sitios')) {
       objRedp.drawRed(vsym.json);  //llama funcion encontrada en redporosa.js
       //muestra el menu para redes porosas
       $('#MenuRedPorosa').css({ "visibility": "visible", "height": "300px", "width": "auto" })
       $('#porosMenu').css({ "visibility": "visible" })
+      $('#controlAvanza').css({ "visibility": "hidden" })
+      $('#controlPausa').css({ "visibility": "hidden" })
+      $('#controlRegresa').css({ "visibility": "hidden" })
     } else {
       //archivo invalido
       alert('Selecciona un archivo JSON valido');

@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="lib\bootstrap4\css\bootstrap.min.css">
   <!-- Referencia al archivo css -->
   <link rel="stylesheet" type="text/css" href="CSS\style.css">
+  <!-- Necesario para mostrar los iconos del menu de particulas -->
+  <link rel="stylesheet" href="./icons/font-awesome-4.7.0/css/font-awesome.min.css">
   <!-- Script necesario para el uso de Three. js -->
   <script src="lib\jquery-ui-1.12.1\jquery\jquery.js"></script>
   <script src="lib\three.js"></script>
@@ -41,13 +43,32 @@
             </label>
           </div>
 
-
+          <!-- Area correspondiente al progress bar y a la botonera del menu de particulas -->
           <div class="container" id="espacio">
             <div id="progress" class="progress">
               <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"> </div>
             </div>
 
+            <!-- Este div se encarga de mostrar los controles para el menu de particulas -->
+            <div id="particulasMenu" class="botonera">
+              <!-- Boton pausa -->
+              <button type="button" id="controlPausa" class="btn btn-success btn-lg" onclick="objParticulas.pause()">
+                <span class="fa fa-pause-circle" aria-hidden="true"></span>
+              </button>
+
+              <!-- Boton regresa -->
+              <button type="button" id="controlRegresa" class="btn btn-success btn-lg"
+                onclick="objParticulas.regresa()">
+                <i class="fa fa-backward"></i>
+              </button>
+
+              <!-- Boton adelanta -->
+              <button type="button" id="controlAvanza" class="btn btn-success btn-lg" onclick="objParticulas.avanzar()">
+                <span class="fa fa-forward" aria-hidden="true"></span>
+              </button>
+
+            </div>
           </div>
 
         </main>
