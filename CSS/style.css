@@ -1,0 +1,234 @@
+/*
+ * Globals
+ */
+
+/* Links */
+a,
+a:focus,
+a:hover {
+  color: #00802b;
+}
+
+ul li{
+  padding: 20px;
+}
+
+/* Custom default button */
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+  color: #000;
+  text-shadow: none; /* Prevent inheritance from `body` */
+  background-color: #00802b;
+  border: .05rem solid #000;
+}
+
+
+/*
+ * Base structure
+ */
+
+html,
+body {
+  height: 100%;
+  background: url('../img/fondo.png');
+  background-repeat: repeat;
+  background-attachment: fixed;
+  
+}
+
+body {
+  display: -ms-flexbox;  
+  display: flex;
+  color: #000;
+
+  /*box-shadow: inset 0 0 5rem rgba(0, 204, 0, .2);*/
+}
+
+
+.cover-container, .container {
+  max-width: 90em;
+}
+
+.container {
+  position: relative;
+  padding: 0;
+  background: lightgray;
+  text-align: center;
+  width: 70em;
+  height: 800px;
+  
+  
+  
+}
+
+.container-fluid{  
+  margin-top: 1em;  
+}
+
+
+
+
+/*
+ * Header
+ */
+.masthead {
+  margin-bottom: 2rem;  
+}
+
+.masthead-brand {
+    font-weight: 1000;
+    margin-left: 1em;  
+  
+}
+
+.masthead-brand:hover {
+  font-weight: 3000;  
+  margin-left: 1em;  
+  text-shadow: .2rem .1rem #B7DA1A;
+  
+}
+
+.nav-masthead .nav-link {
+  padding: .25rem 0;
+  font-weight: 700;
+  font-size: 20px;  
+  /* color: rgba(0, 0, 0, 0); */
+  text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+  background-color: transparent;
+  border-bottom: .25rem solid transparent;
+  margin-left: 33em;
+  
+  
+}
+
+.nav-masthead .nav-link:hover,
+.nav-masthead .nav-link:focus {
+  border-bottom-color: rgba(0, 0, 0, 1);
+  text-shadow: .1rem .1rem #B7DA1A;
+}
+
+.nav-masthead .nav-link + .nav-link {
+  margin-left: 1rem;
+}
+
+.nav-masthead .active {
+  color: #00802b;
+  border-bottom-color: #000;
+}
+
+
+/*
+ * Sidebar
+ */
+
+.sidebar {
+  /*position: fixed;*/
+  /*visibility: hidden;*/
+  top: 0;
+  bottom: 0;
+  left: 0;
+  height: 0px;
+  width: 0px;
+  /*z-index: 100; /* Behind the navbar */
+  /*padding: 48px 0 0; /* Height of navbar */
+  text-align: left;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+
+#controlPausa{
+  position: absolute;  
+  top: 700px;
+  left: 500px;
+}
+
+#controlAvanza{
+  position: absolute;  
+  top: 700px;
+  left: 600px;  
+}
+
+#controlRegresa{
+  position: absolute;
+  top: 700px;
+  left: 385px; 
+  
+} 
+
+#voronoiMenu, #porosMenu {
+  padding-left: 2em;
+  visibility: hidden;
+}
+
+
+.nav-item{
+  height: 0;
+}
+
+.sidebar .nav-link {
+  font-weight: 400;
+  color: #00802b;
+}
+
+.sidebar-heading {
+  font-size: 1.3rem;
+  height: 40px;
+  text-transform: uppercase;
+  background-color: #00802b;
+  color: white;
+
+}
+
+.form-check-label{
+  font-size: large;
+  font-weight: 500;
+  color: #00802b;
+}
+
+/*
+ * Cover
+ */
+.cover {
+  padding: 0 1.5rem;
+}
+.cover .btn-lg {
+  padding: .75rem 1.25rem;
+  font-weight: 700;
+}
+.progress, .progress-bar{
+  visibility: hidden;
+  
+  
+
+}
+/*.progress-bar{
+  width: 0%;
+}*/
+.custom-file-input ~ .custom-file-label::after {
+    content: "";
+    background-color: #20C34B; 
+    color: #fff;
+    border-radius: 15px;
+    border-color: #20C34B;
+    
+    
+}
+
+.custom-file-label{
+  font-weight: 700;
+  font-size: 20px;  
+  background-color: #20C34B; 
+  color: #fff;
+  border-radius: 10px;
+}
+
+
+/*
+ * Footer
+ */
+.mastfoot {
+  color: rgba(255, 255, 255, .5);
+}
