@@ -57,6 +57,7 @@ document.getElementById('exampleInputFile').onchange = function () {
         alert("3D");
       }
 
+
       $('#MenuParticulas').css({ "visibility": "visible", "height": "300px", "width": "auto" })
       $('#particulasMenu').css({ "visibility": "visible" })
       $('#controlAvanza').css({ "visibility": "visible" })
