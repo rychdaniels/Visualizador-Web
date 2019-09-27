@@ -50,7 +50,7 @@ body {
   max-width: 90em;
 }
 
-.container {
+.container, .particula {
   position: relative;
   padding: 0;
   background: lightgray;
@@ -63,8 +63,7 @@ body {
 }
 
 .container-fluid{  
-  margin-top: 1em;  
-}
+  margin-top: 1em;  }
 
 
 
@@ -73,7 +72,8 @@ body {
  * Header
  */
 .masthead {
-  margin-bottom: 2rem;  
+  margin-bottom: 4rem;  
+  margin-left: 250px;
 }
 
 .masthead-brand {
@@ -106,16 +106,21 @@ body {
 .nav-masthead .nav-link:focus {
   border-bottom-color: rgba(0, 0, 0, 1);
   text-shadow: .1rem .1rem #B7DA1A;
+  
 }
 
 .nav-masthead .nav-link + .nav-link {
   margin-left: 1rem;
+  
 }
+
 
 .nav-masthead .active {
   color: #00802b;
   border-bottom-color: #000;
+  
 }
+
 
 
 /*
@@ -139,26 +144,25 @@ body {
 }
 
 
-.botonera #controlPausa{
+#controlPausa{
   position: absolute;  
   top: 730px;
   left: 500px;
-  visibility: hidden;
+
 }
 
-.botonera #controlAvanza{
+#controlAvanza{
   position: absolute;  
   top: 730px;
   left: 600px;  
-  visibility: hidden;
+
   
 }
 
-.botonera #controlRegresa{
+#controlRegresa{
   position: absolute;
   top: 730px;
   left: 385px; 
-  visibility: hidden;
 } 
 
 #voronoiMenu, #porosMenu {
@@ -166,6 +170,9 @@ body {
   visibility: hidden;
 }
 
+.botonera{
+  visibility: hidden;
+}
 
 .nav-item{
   height: 0;
@@ -176,12 +183,15 @@ body {
   color: #00802b;
 }
 
-.sidebar-heading {
+.sidebar #titulo{
   font-size: 1.3rem;
   height: 40px;
   text-transform: uppercase;
   background-color: #00802b;
   color: white;
+  text-align: center;
+  padding-top: 10px;
+  overflow-y: hidden;
 
 }
 

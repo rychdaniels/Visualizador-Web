@@ -23,7 +23,7 @@
 <body class="text-center">
 
   <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-    <header class="masthead mb-auto">
+    <header class="masthead mb-auto fixed-top">
       <div class="inner">
         <nav class="nav nav-masthead">
           <h3 class="masthead-brand"><a href="index.html">Visualizador VSyM</a></h3>
@@ -51,7 +51,7 @@
             </div>
 
             <!-- Este div se encarga de mostrar los controles para el menu de particulas -->
-            <div id="particulasMenu" class="botonera">
+            <div id="botonera" class="botonera">
               <!-- Boton pausa -->
               <button type="button" id="controlPausa" class="btn btn-success btn-lg" onclick="objParticulas.pause()">
                 <span class="fa fa-pause-circle" id="play" aria-hidden="true"></span>
@@ -64,21 +64,33 @@
               </button>
 
               <!-- Boton adelanta -->
-              <button type="button" id="controlAvanza" class="btn btn-success btn-lg" onclick="objParticulas.avanzar()">
+              <button type="button" id="controlAvanza" class="btn btn-success btn-lg">
                 <span class="fa fa-forward" aria-hidden="true"></span>
               </button>
 
             </div>
           </div>
 
+          <!-- Este div es el encargado de mostrar l trayectoria de la particula seleccionada -->
+          <div>
+            <h3>Contenedor de la particula</h3>
+            <div class="particula">
+
+            </div>
+
+          </div>
+
         </main>
 
-        <nav class="d-none d-md-block bg-light sidebar" id="MenuVoronoi">
+        <!-- Codigo para generar el menu Voronoi -->
 
-          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mb-2">
-            <span>MenuVoronoi3D</span>
-          </h6>
-          <div id="voronoiMenu">
+        <nav class="d-none d-md-block bg-light sidebar" id="menu">
+          <!-- Div para menu Voronoi -->
+          <h3 class="align-text-top" id="titulo">
+            <span>Menu</span>
+          </h3>
+
+          <div id="voronoiMenu" class="voronoiMenu">
             <ul class="nav flex-column" id="vor">
               <li class="nav-item">
                 <div class="form-check">
@@ -100,14 +112,10 @@
                 </div>
               </li>
             </ul>
-          </div>
-        </nav>
-        <nav class="d-none d-md-block bg-light sidebar" id="MenuRedPorosa">
+          </div><!-- Termina div para menu voronoi -->
 
-          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mb-2">
-            <span>MenuRedPorosa</span>
-          </h6>
-          <div id="porosMenu">
+          <!-- Comienza div para Red porosa -->
+          <div id="porosMenu" class="porosMenu">
             <ul class="nav flex-column" id="vor">
               <li class="nav-item">
                 <div class="form-check">
@@ -130,14 +138,9 @@
               </li>
             </ul>
           </div>
-        </nav>
-        <nav class="d-none d-md-block bg-light sidebar" id="MenuParticulas">
 
-          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mb-2">
-            <span>Particulas</span>
-          </h6>
-
-          <div id="particulasMenu">
+          <!-- Comienza código para Menu Paticulas -->
+          <div id="particulasMenu" class="particulasMenu">
             <ul class="nav flex-column" id="vor">
               <li class="nav-item">
                 <div class="form-check">
@@ -166,6 +169,8 @@
               </li>
             </ul>
           </div>
+
+
         </nav>
 
 

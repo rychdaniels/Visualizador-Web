@@ -175,6 +175,8 @@ function Particulas() {
     objParticulas.setPos();
     vsym.renderer.render(vsym.scene, vsym.camera);
   }
+
+
   //avanza 5 pasos
   this.avanzar = function () {
     objParticulas.play = false;
@@ -233,6 +235,16 @@ function Particulas() {
 
   }
 }
+
+
+const botonRegresa = document.getElementById('controlAvanza');
+botonRegresa.addEventListener('click', function () {
+  objParticulas.paso *= 1.5;
+  console.log(objParticulas.paso);
+  objParticulas.setPos();
+
+})
+
 
 Particulas.prototype = new Visualizador();
 
