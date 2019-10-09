@@ -11,7 +11,8 @@ function Particulas() {
   this.play = false;
 
   //inicia escena, particulas, dibuja canal y los agrega a escena
-  this.creaEscena = function (json) {
+  this.creaEscena = function (json, elemento, vsym) {
+
     objParticulas.paso = 1;
     objParticulas.play = true;
     var aspect = 1000 / 800;
@@ -22,7 +23,7 @@ function Particulas() {
     vsym.scene = new THREE.Scene();
     //cambia el color del background a blaco, el color es valor hexadecimal
     vsym.scene.background = new THREE.Color(0xD3D3D3);
-    espacio.appendChild(vsym.renderer.domElement);
+    elemento.appendChild(vsym.renderer.domElement);
 
     /**vsym.controls = new THREE.OrbitControls( vsym.camera, vsym.renderer.domElement );
 
@@ -35,6 +36,7 @@ function Particulas() {
     var barizq = objParticulas.funciones.LBarrier.value;
     var barder = objParticulas.funciones.RBarrier.value;
 
+
     var xRange = barder - barizq;
     var h = xRange / 1000; //si se requiere mas detalle en las funciones hacer mas pequeño este valor
     var x = barizq;
@@ -44,12 +46,13 @@ function Particulas() {
     var formaCanal = new THREE.Shape();
 
     //definiendo funciones
-    var funciont = objParticulas.funciones.TWall.function;
-    var tWall = texttoFunction(funciont);//string --> js
+    var funciont = objParticulas.funciones.TWall.function;//Accedemos a la funcion
+    var tWall = texttoFunction(funciont);//string --> js con ayuda del parser
+    console.log(tWall);
     var funcionb = objParticulas.funciones.BWall.function;
     var bWall = texttoFunction(funcionb);
 
-    //TWALL
+    //TWALL es la pared superior del canal
     var tgeometry = new THREE.Geometry();
     var p0 = tWall(x);
     formaCanal.moveTo(x + h, p0); // punto inicial de la forma del canal
@@ -122,9 +125,16 @@ function Particulas() {
     vsym.scene.add(barr);
     vsym.scene.add(funb);
     vsym.scene.add(barl);
+    vsym.renderer.render(vsym.scene, vsym.camera);
+
+  }
+
+  // Funcion encargada de dibujar las particulas en la escena
+  this.dibujar = function (json) {
 
     //dibuja particulas y las coloca en la primer posicion
     objParticulas.particulas = json.particles.particle;
+    console.log(objParticulas.particulas);
     var color = 1;
     objParticulas.particulas.forEach(function (particula) {//para cada particula se realiza
       var x = particula.pasos[0].x;
@@ -142,13 +152,14 @@ function Particulas() {
       objParticulas.trays.push([{ "x": x, "y": y }]);//se guarda pos para las trayectorias
 
       color += 100;
+
     });
     //console.log(vsym.scene);
     //console.log(objParticulas.trayso);
     objParticulas.animate();
   }
-  const play = document.getElementById('controlPausa');
 
+  const play = document.getElementById('controlPausa');
   play.addEventListener('click', function () {
     if (play.firstElementChild.className === 'fa fa-play') {
       document.getElementById('play').removeAttribute('class');
@@ -234,6 +245,16 @@ function Particulas() {
     }
 
   }
+
+  this.aislaParticula = function () {
+    particula = document.getElementById('particula1');
+    if (particula.checked == true) {
+      this.creaEscena();
+      elemento.appendChild(vsym.renderer.domElement);
+      alert('click');
+    }
+
+  }
 }
 
 
@@ -246,7 +267,7 @@ botonRegresa.addEventListener('click', function () {
 })
 
 
-Particulas.prototype = new Visualizador();
+// Particulas.prototype = new Visualizador();
 
 //funcion que coloca la escena en el navegador
 Particulas.prototype.animate = function () {
@@ -262,6 +283,7 @@ Particulas.prototype.animate = function () {
     vsym.renderer.render(vsym.scene, vsym.camera);
     requestAnimationFrame(avanza);
   }
+
   requestAnimationFrame(avanza);
 };
 

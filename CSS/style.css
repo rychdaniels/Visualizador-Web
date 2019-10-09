@@ -2,12 +2,7 @@
  * Globals
  */
 
-/* Links */
-a,
-a:focus,
-a:hover {
-  color: #00802b;
-}
+
 
 ul li{
   padding: 20px;
@@ -63,65 +58,46 @@ body {
 }
 
 .container-fluid{  
-  margin-top: 1em;  }
-
-
-
+  margin-top: 1em;  
+  
+}
+main {
+  margin-right: 20px;
+  padding: 0px 0px 0px 0px;
+  
+}
+.list-item{
+  background: #000;
+  margin: 100px;
+}
 
 /*
  * Header
  */
-.masthead {
-  margin-bottom: 4rem;  
-  margin-left: 250px;
+a:link {
+  text-decoration: none;
 }
-
-.masthead-brand {
-    font-weight: 1000;
-    margin-left: 1em;  
-  
-}
-
-.masthead-brand:hover {
-  font-weight: 3000;  
-  margin-left: 1em;  
-  text-shadow: .2rem .1rem #B7DA1A;
-  
-}
-
-.nav-masthead .nav-link {
-  padding: .25rem 0;
+ 
+.masthead-brand{
+  color: #fff;
+  font-size: 30px;
   font-weight: 700;
-  font-size: 20px;  
-  /* color: rgba(0, 0, 0, 0); */
-  text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
-  background-color: transparent;
-  border-bottom: .25rem solid transparent;
-  margin-left: 33em;
-  
+  padding: 5px;
   
 }
 
-.nav-masthead .nav-link:hover,
-.nav-masthead .nav-link:focus {
-  border-bottom-color: rgba(0, 0, 0, 1);
-  text-shadow: .1rem .1rem #B7DA1A;
-  
+a:hover {  
+  color: #B7DA1A;
 }
 
-.nav-masthead .nav-link + .nav-link {
-  margin-left: 1rem;
+.nav-link{
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+  padding: 5px;
+  margin-left: 40px;
   
 }
-
-
-.nav-masthead .active {
-  color: #00802b;
-  border-bottom-color: #000;
-  
-}
-
-
 
 /*
  * Sidebar
@@ -143,27 +119,12 @@ body {
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
 
-
-#controlPausa{
+#botonera{
   position: absolute;  
-  top: 730px;
-  left: 500px;
-
-}
-
-#controlAvanza{
-  position: absolute;  
-  top: 730px;
-  left: 600px;  
-
+  top: 880px;
+  right: 45%;
   
 }
-
-#controlRegresa{
-  position: absolute;
-  top: 730px;
-  left: 385px; 
-} 
 
 #voronoiMenu, #porosMenu {
   padding-left: 2em;
@@ -171,14 +132,12 @@ body {
 }
 
 .botonera{
-  visibility: hidden;
+    visibility: hidden;  
 }
 
-.nav-item{
-  height: 0;
-}
 
-.sidebar .nav-link {
+
+.sidebar /* .nav-link*/ {  
   font-weight: 400;
   color: #00802b;
 }
@@ -225,8 +184,7 @@ body {
     background-color: #20C34B; 
     color: #fff;
     border-radius: 15px;
-    border-color: #20C34B;
-    
+    border-color: #20C34B;    
     
 }
 
@@ -236,6 +194,7 @@ body {
   background-color: #20C34B; 
   color: #fff;
   border-radius: 10px;
+  
 }
 
 

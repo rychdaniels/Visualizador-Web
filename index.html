@@ -21,21 +21,19 @@
 </head>
 
 <body class="text-center">
-
   <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-    <header class="masthead mb-auto fixed-top">
-      <div class="inner">
-        <nav class="nav nav-masthead">
-          <h3 class="masthead-brand"><a href="index.html">Visualizador VSyM</a></h3>
-          <a class="nav-link " href="index.html">Inicio</a>
-          <a class="nav-link" href="info.html">Información</a>
-        </nav>
-      </div>
-    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+      <a class="masthead-brand" href="index.html">Visualizador VSyM</a>
+      <ul class="navbar-nav">
+        <a class="nav-link active " href="index.html">Inicio</a>
+        <a class="nav-link" href="info.html">Información</a>
+      </ul>
+    </nav>
 
     <div class="container-fluid">
       <div class="row">
-        <main role="main" class="inner cover">
+        <main role="main">
           <div class="custom-file" id="customFile">
             <input type="file" class="custom-file-input" id="exampleInputFile" aria-describedby="fileHelp" lang="es">
             <label class="custom-file-label" id="botonL" for="exampleInputFile">
@@ -50,31 +48,13 @@
                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"> </div>
             </div>
 
-            <!-- Este div se encarga de mostrar los controles para el menu de particulas -->
-            <div id="botonera" class="botonera">
-              <!-- Boton pausa -->
-              <button type="button" id="controlPausa" class="btn btn-success btn-lg" onclick="objParticulas.pause()">
-                <span class="fa fa-pause-circle" id="play" aria-hidden="true"></span>
-              </button>
 
-              <!-- Boton regresa -->
-              <button type="button" id="controlRegresa" class="btn btn-success btn-lg"
-                onclick="objParticulas.regresa()">
-                <i class="fa fa-backward"></i>
-              </button>
-
-              <!-- Boton adelanta -->
-              <button type="button" id="controlAvanza" class="btn btn-success btn-lg">
-                <span class="fa fa-forward" aria-hidden="true"></span>
-              </button>
-
-            </div>
           </div>
 
           <!-- Este div es el encargado de mostrar l trayectoria de la particula seleccionada -->
           <div>
             <h3>Contenedor de la particula</h3>
-            <div class="particula">
+            <div class="particula" id="particula">
 
             </div>
 
@@ -144,7 +124,7 @@
             <ul class="nav flex-column" id="vor">
               <li class="nav-item">
                 <div class="form-check">
-                  <button type="button" class="btn btn-success" onclick="objParticulas.pause()">Pausa</button>
+                  <button type="button" class="btn btn-success" id="pausa">Pausa</button>
                 </div>
               </li>
 
@@ -167,7 +147,35 @@
               <li class="nav-item">
                 <p>Paso: <output id="paso"></output></p>
               </li>
+
+              <li class="nav-item">
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="particula1"
+                    onchange="objParticulas.aislaParticula()">
+                  <label class="form-check-label" for="particula1">Particula</label>
+                </div>
+              </li>
             </ul>
+
+            <!-- Este div se encarga de mostrar los controles para el menu de particulas -->
+            <div id="botonera" class="botonera">
+              <!-- Boton regresa -->
+              <button type="button" id="controlRegresa" class="btn btn-success btn-lg"
+                onclick="objParticulas.regresa()">
+                <i class="fa fa-backward"></i>
+              </button>
+
+              <!-- Boton pausa -->
+              <button type="button" id="controlPausa" class="btn btn-success btn-lg" onclick="objParticulas.pause()">
+                <span class="fa fa-pause-circle" id="play" aria-hidden="true"></span>
+              </button>
+
+              <!-- Boton adelanta -->
+              <button type="button" id="controlAvanza" class="btn btn-success btn-lg">
+                <span class="fa fa-forward" aria-hidden="true"></span>
+              </button>
+
+            </div>
           </div>
 
 
@@ -183,12 +191,20 @@
 
   </div>
   <!-- Script necesario para realizar las visualizaciones -->
-  <script src="JS\index.js">		</script>
-  <script src="JS\menured.js">		</script>
+  <!-- <script src="JS\index.js">		</script> -->
+  <!-- <script src="JS\menured.js">		</script>
   <script src="JS\voronoi.js">		</script>
   <script src="JS\redporosa.js">		</script>
   <script src="JS\parser.js">		</script>
-  <script src="JS\particulas.js">		</script>
+  <script src="JS\particulas.js">		</script> -->
+  <script src="JS\indexN.js">		</script>
+  <!-- <script src="JS\particulasN.js">		</script> -->
+  <script src="JS\particulasN2.js">		</script>
+  <script src="JS\creaEscena.js">		</script>
+  <script src="JS\parser.js">		</script>
+
+
+
 
 
   <!-- JS para bootstrap -->

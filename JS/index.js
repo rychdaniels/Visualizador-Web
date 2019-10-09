@@ -12,6 +12,7 @@ Visualizador.prototype.animate = function () {
   if (vsym.bandera != false) {
     vsym.controls.update();
     vsym.renderer.render(vsym.scene, vsym.camera);
+    console.log(vsym.camera);
     requestAnimationFrame(vsym.animate);
   }
 };
@@ -20,14 +21,14 @@ var vsym = new Visualizador();
 
 
 vsym.renderer = new THREE.WebGLRenderer();
-vsym.renderer.setSize(1000, 800);
+vsym.renderer.setSize(1120, 800);
 
 
 /* funcion para leer el archivo */
-document.getElementById('exampleInputFile').onchange = function () {
+var uno = document.getElementById('exampleInputFile').onchange = function () {
   vsym.bandera = false;
 
-  // Nav
+
   $('#menu').css({ "visibility": "hidden", "height": "0px", "width": "0px" });
   $("#progress").css({ "visibility": "visible", "height": "40px" });
   $("#progressBar").css({ "visibility": "visible", "width": "100%" }).text("Cargando..."); /*Muestra la barra de progreso*/
@@ -36,11 +37,11 @@ document.getElementById('exampleInputFile').onchange = function () {
   var reader = new FileReader();
   reader.onload = function (progressEvent) {
     vsym.json = JSON.parse(this.result);
-    console.log(vsym.json);
+    // console.log(vsym.json);
     vsym.bandera = true;
-    if (vsym.json.hasOwnProperty('p')) {
+    if (JSON.parse(this.result).hasOwnProperty('p')) {
       var puntos = vsym.json.p;
-      console.log(puntos);
+
       objVoronoi.drawVoronoi(puntos);  //llama funcion drawVoronoi encontrada en voronoi.js
       //muestra el menu para voronoi
       $('#menu').css({ "visibility": "visible", "height": "400px", "width": "200" })
@@ -52,9 +53,11 @@ document.getElementById('exampleInputFile').onchange = function () {
 
 
     } else if (vsym.json.hasOwnProperty('particles')) {
-      if (vsym.json.type == "2D") {
-        objParticulas.creaEscena(vsym.json); //llama funcion encontrada en particulas.js
-
+      if (JSON.parse(this.result).type == "2D") {
+        elemento = document.getElementById('espacio');
+        particula = document.getElementById('particula');
+        objParticulas.creaEscena(vsym.json, elemento, vsym); //llama funcion encontrada en particulas.js
+        objParticulas.dibujar(vsym.json); //llama funcion encontrada en particulas.js
 
       } else {
         alert("3D");
@@ -93,3 +96,5 @@ document.getElementById('exampleInputFile').onchange = function () {
 
   reader.readAsText(file);
 };
+
+
