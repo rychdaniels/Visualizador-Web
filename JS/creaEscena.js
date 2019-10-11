@@ -1,19 +1,32 @@
-var camera, renderer, scene;
-function creaEscena(elemento) {
+function Visualizador() {
+    this.scene = 0;
+    this.group = 0;
+    this.camera = 0;
+    this.renderer = 0;
+    this.controls = 0;
+    this.bandera = false;
+    this.json = 0;
+
+
+}
+Visualizador.prototype.creaEscena = function (elemento) {
 
     var aspect = elemento.clientWidth / elemento.clientHeight;
+    this.renderer = new THREE.WebGLRenderer();
+    this.renderer.setSize(elemento.clientWidth, elemento.clientHeight - 20);
+
 
     //Crea la escena donde se mostrara la visulaizacion
-    scene = new THREE.Scene();
+    this.scene = new THREE.Scene();
     // Será el color de fondo de la escena
-    scene.background = new THREE.Color(0xD3D3D3);
+    this.scene.background = new THREE.Color(0xD3D3D3);
 
-    camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
-    camera.position.set(0, 0, 1);
+    this.camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+    this.camera.position.set(0, 0, 1);
 
-    renderer = new THREE.WebGLRenderer();
-    renderer.setSize(elemento.clientWidth, elemento.clientHeight - 20);
+
 
     console.log(elemento);
-    elemento.appendChild(renderer.domElement);
+    elemento.appendChild(this.renderer.domElement);
 }
+

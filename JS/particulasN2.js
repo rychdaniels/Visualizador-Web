@@ -1,4 +1,5 @@
 function ParticulasN2() {
+
     this.paso = 1;
     this.particulas = 0;
     this.funciones = 0;
@@ -11,12 +12,30 @@ function ParticulasN2() {
 }
 
 
-function dibujar(objParticulas, json) {
+// ParticulasN2.prototype.animate = function () {
+//     function avanza() {
+//       if (visualizador.bandera != false) {
+//         if (objParticulas.play != false) {
+//           objParticulas.paso++;
+//           objParticulas.setPos();
+//         }
+//         //objParticulas.paso++;
 
-    dibujar.prototype.dibujaCanal = function () {
+//       }
+//       visualizador.renderer.render(visualizador.scene, visualizador.camera);
+//       requestAnimationFrame(avanza);
+//     }
+
+//     requestAnimationFrame(avanza);
+//   };
+
+function dibujar(objParticulas, json, visualizador) {
+
+    this.dibujaCanal = function () {
         var elemento = document.getElementById('espacio');
-        creaEscena(elemento);
+        visualizador.creaEscena(elemento);
         objParticulas.funciones = json.canal;
+
 
         console.log(objParticulas);
         var barizq = objParticulas.funciones.LBarrier.value;
@@ -106,12 +125,44 @@ function dibujar(objParticulas, json) {
         var cgeometry = new THREE.ShapeGeometry(formaCanal);
         var materialc = new THREE.MeshBasicMaterial({ color: 0x9B9B9B });
         var canal = new THREE.Mesh(cgeometry, materialc);
-        scene.add(canal);
-        scene.add(funt);//agrega a escena
-        scene.add(barr);
-        scene.add(funb);
-        scene.add(barl);
-        renderer.render(scene, camera);
+        visualizador.scene.add(canal);
+        visualizador.scene.add(funt);//agrega a escena
+        visualizador.scene.add(barr);
+        visualizador.scene.add(funb);
+        visualizador.scene.add(barl);
+        visualizador.renderer.render(visualizador.scene, visualizador.camera);
+
+    }
+
+
+    this.dibujaParticulas = function () {
+        this.dibujaCanal();
+        //dibuja particulas y las coloca en la primer posicion
+        objParticulas.particulas = json.particles.particle;
+
+        var color = 1;
+        objParticulas.particulas.forEach(function (particula) {//para cada particula se realiza
+            var x = particula.pasos[0].x;
+            var y = particula.pasos[0].y;
+            var p = new THREE.SphereGeometry(.01, 10, 10); //(radio, ..., ...)
+            var aux = color * 111111;
+            objParticulas.color.push(aux);
+
+            var material = new THREE.MeshBasicMaterial({ color: aux });
+            var sphere = new THREE.Mesh(p, material);
+            sphere.position.x = parseInt(x);
+            sphere.position.y = parseInt(y);
+            visualizador.scene.add(sphere);
+            objParticulas.pars.push(sphere);
+
+            objParticulas.trays.push([{ "x": x, "y": y }]);//se guarda pos para las trayectorias
+            color += 100;
+
+        });
+        //console.log(scene);
+        //console.log(trayso);
+        // objParticulas.animate();
+        visualizador.renderer.render(visualizador.scene, visualizador.camera);
     }
 }
 
