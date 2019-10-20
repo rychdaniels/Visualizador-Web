@@ -7,7 +7,7 @@ document.getElementById('exampleInputFile').onchange = function () {
         json = JSON.parse(this.result);
         
         $('#espacio').empty();
-        object =  eval("new " + json.name + "(visualizador)"); 
+        object =  eval("new " + json.name + "(visualizador,json)"); 
         object.draw(json);
         
     }
