@@ -1,14 +1,28 @@
 function Visualizador() {
-    this.scene = 0;
-    this.group = 0;
-    this.camera = 0;
-    this.renderer = 0;
-    this.controls = 0;
+    var mySelf = this;
+    this.scene;
+    this.group;
+    this.camera;
+    this.renderer;
+    this.controls;
     this.bandera = false;
-    this.json = 0;
+    this.json;
+    
 
+    this.animate = function () {
+        
+        //Esta función sólo es uilizada por el diagrama Voronio        
+        if (mySelf.bandera != false) {            
+            mySelf.controls.update();
+            mySelf.renderer.render(mySelf.scene, mySelf.camera);
+            // console.log(mySelf.camera);
+            requestAnimationFrame(mySelf.animate);
+        }
+    };
 
 }
+
+
 Visualizador.prototype.creaEscena = function (elemento) {
 
     var aspect = elemento.clientWidth / elemento.clientHeight;
@@ -23,10 +37,6 @@ Visualizador.prototype.creaEscena = function (elemento) {
 
     this.camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
     this.camera.position.set(0, 0, 1);
-
-
-
-    console.log(elemento);
     elemento.appendChild(this.renderer.domElement);
 }
 

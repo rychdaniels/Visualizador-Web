@@ -1,5 +1,6 @@
-function ParticulasN2() {
+function ParticulasN2(visualizador) {
 
+    var mySelf = this;
     this.paso = 1;
     this.particulas = 0;
     this.funciones = 0;
@@ -8,36 +9,121 @@ function ParticulasN2() {
     this.trays = [];//posiciones
     this.trayso = [];//lineas
     this.play = false;
+	
 
-}
+
+    this.setPos = function () {
+        for (var i = 0; i < this.particulas.length; i++) {
+            if (this.paso < this.particulas[i].pasos.length) {
+                var x = parseFloat(this.particulas[i].pasos[this.paso].x);
+                var y = parseFloat(this.particulas[i].pasos[this.paso].y);
+                this.pars[i].position.setX(x);
+                this.pars[i].position.setY(y);
+                this.trays[i].push({ "x": x, "y": y });
+            } else if (this.paso == this.particulas[i].pasos.length) {
+                console.log("terminó particula: " + i);
+            }
+        }
+        checkbox = document.getElementById("Checkpt1");
+        if (checkbox.checked == true) {
+            this.muestraTray();
+        }
+        document.getElementById("paso").innerHTML = this.paso;
+
+    }
+
+    ///Aqui va muestraTrayectoria
+
+    this.muestraTray = function () {
+        checkbox = document.getElementById("Checkpt1");
+        this.trayso.forEach(function (tray) {
+            visualizador.scene.remove(tray);
+        });
+        this.trayso = [];
+        if (checkbox.checked == true) {
+            for (var i = 0; i < this.trays.length; i++) {
+                var color = this.color[i];
+                var geometry = new THREE.Geometry();
+                var material = new THREE.LineBasicMaterial({ color: color });
+                for (var j = 0; j < this.trays[i].length; j++) {
+                    var x = this.trays[i][j].x;
+                    var y = this.trays[i][j].y;
+                    geometry.vertices.push(new THREE.Vector3(x, y, 0));
+
+                }
+                var tray = new THREE.Line(geometry, material);
+                visualizador.scene.add(tray);
+                this.trayso.push(tray);
+
+            }
+        }
+
+    }
+
+    this.pause = function () {
+        console.log('click');
+        if (this.play == true) {
+            this.play = false;
+
+        } else {
+            this.play = true;
+        }
+    }
+
+    this.mostrarMenu = function () {
+        $('#menu').empty();
+        var item = "<h3 class='align-text-top' id='titulo'><span>Menu Particulas</span></h3>" +
+            "<div id = 'particulasMenu' class='particulasMenu' >" +
+            "<ul class='nav flex-column' id='vor'>" +
+            "<li class='nav-item'>" +
+            "<div class='form-check'>" +
+            "<button type='button' class='btn btn-success' onclick='mySelf.pause()' > Pausa</button > " +
+            "</div>" +
+            "</li>" +
+
+            "<li class='nav-item'>" +
+            "<div class='form-check'>" +
+            "<button type='button' class='btn btn-success' onclick= + this.regresa() + >-5 pasos</button>" +
+            "</div>" +
+            "</li>" +
+            "<li class='nav-item'>" +
+            "<div class='form-check'>" +
+            "<button type='button' class='btn btn-success' onclick= + this.avanzar() + >+5 pasos</button>" +
+            "</div>" +
+            "</li>" +
+            "<li class='nav-item'>" +
+            "<div class='form-check'>" +
+            "<input type='checkbox' class='form-check-input' id='Checkpt1' onchange= 'this.muestraTray' >" +
+            "<label class='form-check-label' for='exampleCheck1'>Trayectorias</label>" +
+            "</div>" +
+            "</li>" +
+            "<li class='nav-item'>" +
+            "<p>Paso: <output id='paso'></output></p>" +
+            "</li>" +
+
+            "<li class='nav-item'>" +
+            "<div class='form-check'>" +
+            "<input type='checkbox' class='form-check-input' id='particula1'" +
+            "onchange='objParticulas.aislaParticula()'>" +
+            "<label class='form-check-label' for='particula1'>Particula</label>" +
+            "</div>" +
+            "</li>" +
+            "</ul>";
+        $('#menu').append(item);
+        $('#menu').css({ "visibility": "visible", "height": "600px", "width": "250" })
+
+    }
+    this.mostrarMenu();
+ this.draw = function(json) {
 
 
-// ParticulasN2.prototype.animate = function () {
-//     function avanza() {
-//       if (visualizador.bandera != false) {
-//         if (objParticulas.play != false) {
-//           objParticulas.paso++;
-//           objParticulas.setPos();
-//         }
-//         //objParticulas.paso++;
-
-//       }
-//       visualizador.renderer.render(visualizador.scene, visualizador.camera);
-//       requestAnimationFrame(avanza);
-//     }
-
-//     requestAnimationFrame(avanza);
-//   };
-
-function dibujar(objParticulas, json, visualizador) {
+    var objParticulas=mySelf;
 
     this.dibujaCanal = function () {
         var elemento = document.getElementById('espacio');
         visualizador.creaEscena(elemento);
+        objParticulas.play = true; //Si la escena se ha creado correctamente podemos comenzar la animacion
         objParticulas.funciones = json.canal;
-
-
-        console.log(objParticulas);
         var barizq = objParticulas.funciones.LBarrier.value;
         var barder = objParticulas.funciones.RBarrier.value;
 
@@ -52,8 +138,7 @@ function dibujar(objParticulas, json, visualizador) {
 
         //definiendo funciones
         var funciont = objParticulas.funciones.TWall.function;//Accedemos a la funcion
-        var tWall = texttoFunction(funciont);//string --> js con ayuda del parser
-        console.log(tWall);
+        var tWall = texttoFunction(funciont);//string --> js con ayuda del parser        
         var funcionb = objParticulas.funciones.BWall.function;
         var bWall = texttoFunction(funcionb);
 
@@ -119,6 +204,7 @@ function dibujar(objParticulas, json, visualizador) {
             var barl = new THREE.Line(lgeometry, material);
         } else {
             var barl = new THREE.Line(lgeometry, mat2);
+
         }
 
         //crea canal y agrega a escena, luego agrega barreras del canal
@@ -130,18 +216,19 @@ function dibujar(objParticulas, json, visualizador) {
         visualizador.scene.add(barr);
         visualizador.scene.add(funb);
         visualizador.scene.add(barl);
-        visualizador.renderer.render(visualizador.scene, visualizador.camera);
+
 
     }
 
 
     this.dibujaParticulas = function () {
         this.dibujaCanal();
+
         //dibuja particulas y las coloca en la primer posicion
         objParticulas.particulas = json.particles.particle;
-
         var color = 1;
         objParticulas.particulas.forEach(function (particula) {//para cada particula se realiza
+
             var x = particula.pasos[0].x;
             var y = particula.pasos[0].y;
             var p = new THREE.SphereGeometry(.01, 10, 10); //(radio, ..., ...)
@@ -151,6 +238,7 @@ function dibujar(objParticulas, json, visualizador) {
             var material = new THREE.MeshBasicMaterial({ color: aux });
             var sphere = new THREE.Mesh(p, material);
             sphere.position.x = parseInt(x);
+
             sphere.position.y = parseInt(y);
             visualizador.scene.add(sphere);
             objParticulas.pars.push(sphere);
@@ -158,13 +246,39 @@ function dibujar(objParticulas, json, visualizador) {
             objParticulas.trays.push([{ "x": x, "y": y }]);//se guarda pos para las trayectorias
             color += 100;
 
+
         });
         //console.log(scene);
         //console.log(trayso);
-        // objParticulas.animate();
-        visualizador.renderer.render(visualizador.scene, visualizador.camera);
+
+        objParticulas.animate(visualizador, objParticulas);
     }
+    this.dibujaParticulas();
 }
+    
+
+
+}
+
+
+ParticulasN2.prototype.animate = function (visualizador, objParticulas) {
+
+    function avanza() {
+        if (visualizador.bandera != false) {
+            if (objParticulas.play != false) {
+                objParticulas.paso++;
+                objParticulas.setPos();
+            }
+            //objParticulas.paso++;
+
+        }
+        visualizador.renderer.render(visualizador.scene, visualizador.camera);
+        requestAnimationFrame(avanza);
+    }
+
+    requestAnimationFrame(avanza);
+};
+
 
 
 
@@ -172,3 +286,4 @@ function dibujar(objParticulas, json, visualizador) {
 function texttoFunction(funcion) {
     return Parser.parse(funcion).toJSFunction(['x']);
 }
+

@@ -62,122 +62,9 @@
 
         </main>
 
-        <!-- Codigo para generar el menu Voronoi -->
-
+        <!-- Lugar donde se agregara el menu -->
         <nav class="d-none d-md-block bg-light sidebar" id="menu">
           <!-- Div para menu Voronoi -->
-          <h3 class="align-text-top" id="titulo">
-            <span>Menu</span>
-          </h3>
-
-          <div id="voronoiMenu" class="voronoiMenu">
-            <ul class="nav flex-column" id="vor">
-              <li class="nav-item">
-                <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="Check1" onchange="objVoronoi.setBlue(0,0,1)">
-                  <label class="form-check-label" for="exampleCheck1">Azul</label>
-                </div>
-              </li>
-
-              <li class="nav-item">
-                <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="Check2" onchange="objVoronoi.setGris(1,1,1)">
-                  <label class="form-check-label" for="exampleCheck1">Grises</label>
-                </div>
-              </li>
-              <li class="nav-item">
-                <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="Check3" onchange="autoRot(1)">
-                  <label class="form-check-label" for="exampleCheck1">Auto Rotar</label>
-                </div>
-              </li>
-            </ul>
-          </div><!-- Termina div para menu voronoi -->
-
-          <!-- Comienza div para Red porosa -->
-          <div id="porosMenu" class="porosMenu">
-            <ul class="nav flex-column" id="vor">
-              <li class="nav-item">
-                <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="Checkrp1" onchange="objRedp.setBlue(.25,.5,1)">
-                  <label class="form-check-label" for="exampleCheck1">Azul</label>
-                </div>
-              </li>
-
-              <li class="nav-item">
-                <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="Checkrp2" onchange="objRedp.setGris(.25,.5,.75)">
-                  <label class="form-check-label" for="exampleCheck1">Grises</label>
-                </div>
-              </li>
-              <li class="nav-item">
-                <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="Checkrp3" onchange="autoRot(2)">
-                  <label class="form-check-label" for="exampleCheck1">Auto Rotar</label>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Comienza código para Menu Paticulas -->
-          <div id="particulasMenu" class="particulasMenu">
-            <ul class="nav flex-column" id="vor">
-              <li class="nav-item">
-                <div class="form-check">
-                  <button type="button" class="btn btn-success" id="pausa">Pausa</button>
-                </div>
-              </li>
-
-              <li class="nav-item">
-                <div class="form-check">
-                  <button type="button" class="btn btn-success" onclick="objParticulas.regresa()">-5 pasos</button>
-                </div>
-              </li>
-              <li class="nav-item">
-                <div class="form-check">
-                  <button type="button" class="btn btn-success" onclick="objParticulas.avanzar()">+5 pasos</button>
-                </div>
-              </li>
-              <li class="nav-item">
-                <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="Checkpt1" onchange="objParticulas.muestraTray()">
-                  <label class="form-check-label" for="exampleCheck1">Trayectorias</label>
-                </div>
-              </li>
-              <li class="nav-item">
-                <p>Paso: <output id="paso"></output></p>
-              </li>
-
-              <li class="nav-item">
-                <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="particula1"
-                    onchange="objParticulas.aislaParticula()">
-                  <label class="form-check-label" for="particula1">Particula</label>
-                </div>
-              </li>
-            </ul>
-
-            <!-- Este div se encarga de mostrar los controles para el menu de particulas -->
-            <div id="botonera" class="botonera">
-              <!-- Boton regresa -->
-              <button type="button" id="controlRegresa" class="btn btn-success btn-lg"
-                onclick="objParticulas.regresa()">
-                <i class="fa fa-backward"></i>
-              </button>
-
-              <!-- Boton pausa -->
-              <button type="button" id="controlPausa" class="btn btn-success btn-lg" onclick="objParticulas.pause()">
-                <span class="fa fa-pause-circle" id="play" aria-hidden="true"></span>
-              </button>
-
-              <!-- Boton adelanta -->
-              <button type="button" id="controlAvanza" class="btn btn-success btn-lg">
-                <span class="fa fa-forward" aria-hidden="true"></span>
-              </button>
-
-            </div>
-          </div>
-
 
         </nav>
 
@@ -200,6 +87,7 @@
   <script src="JS\indexN.js">		</script>
   <!-- <script src="JS\particulasN.js">		</script> -->
   <script src="JS\particulasN2.js">		</script>
+  <script src="JS\voronoiN.js">		</script>
   <script src="JS\creaEscena.js">		</script>
   <script src="JS\parser.js">		</script>
 

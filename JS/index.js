@@ -10,9 +10,10 @@ function Visualizador() {
 //funcion que coloca la escena en el navegador
 Visualizador.prototype.animate = function () {
   if (vsym.bandera != false) {
+
     vsym.controls.update();
     vsym.renderer.render(vsym.scene, vsym.camera);
-    console.log(vsym.camera);
+
     requestAnimationFrame(vsym.animate);
   }
 };
