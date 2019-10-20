@@ -1,5 +1,3 @@
-const contenedor = document.getElementById('espacio');
-
 document.getElementById('exampleInputFile').onchange = function () {
     var visualizador = new Visualizador();
     visualizador.bandera = true;
@@ -10,7 +8,7 @@ document.getElementById('exampleInputFile').onchange = function () {
         
         $('#espacio').empty();
         object =  eval("new " + json.name + "(visualizador)"); 
-        object.draw(json, visualizador);
+        object.draw(json);
         
     }
 
