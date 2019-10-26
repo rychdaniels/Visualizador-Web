@@ -214,10 +214,10 @@ function ParticulasN2(visualizador,json) {
 
     }
 
-    ///Aqui va muestraTrayectoria
+    
 
     this.muestraTray = function () {
-        // checkbox = document.getElementById("Checkpt1");
+        
         this.trayso.forEach(function (tray) {
             visualizador.scene.remove(tray);
         });
