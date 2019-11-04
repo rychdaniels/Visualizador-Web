@@ -7,6 +7,8 @@ function Visualizador() {
     this.controls;
     this.bandera = false;
     this.json;
+    this.renderer = new THREE.WebGLRenderer();
+    
     
 
     this.animate = function () {
@@ -24,14 +26,15 @@ function Visualizador() {
 
 
 Visualizador.prototype.creaEscena = function (elemento) {
-
+    
     var aspect = elemento.clientWidth / elemento.clientHeight;
-    this.renderer = new THREE.WebGLRenderer();
+    
     this.renderer.setSize(elemento.clientWidth, elemento.clientHeight - 20);
 
 
-    //Crea la escena donde se mostrara la visulaizacion
+    //Crea la escena donde se mostrara la visualizacion
     this.scene = new THREE.Scene();
+    
     // Será el color de fondo de la escena
     this.scene.background = new THREE.Color(0xD3D3D3);
 

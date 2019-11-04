@@ -61,7 +61,7 @@ function Particulas(visualizador,json) {
     this.draw = function() {
         var objParticulas=mySelf;
         this.dibujaCanal = function () {
-            var elemento = document.getElementById('espacio');
+            var elemento = document.getElementById('espacio');            
             visualizador.creaEscena(elemento);
             objParticulas.play = true; //Si la escena se ha creado correctamente podemos comenzar la animacion
             objParticulas.funciones = json.canal;
