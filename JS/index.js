@@ -18,4 +18,5 @@ document.getElementById('exampleInputFile').onchange = function () {
     }
 
     reader.readAsText(file);
+    
 };

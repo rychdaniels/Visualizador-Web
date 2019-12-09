@@ -9,61 +9,78 @@ function Particulas(visualizador,json) {
     this.trays = [];//posiciones
     this.trayso = [];//lineas
     this.play = false;
+
 	
     this.mostrarMenu = function () {
-        $('#menu').empty();
-        var item = "<h3 class='align-text-top' id='titulo'><span>Menu Particulas</span></h3>" +
-            "<div id = 'particulasMenu' class='particulasMenu' >" +
+        var contenedor= "<div class='row' id='visualizador"+visualizador.id+"'"+">"+
+                        " <div class='container col-sm-10' id='"+visualizador.id+"'"+"></div> " +
+                         "<div class='d-none d-md-block bg-light sidebar col-sm-2' id='menu"+visualizador.id+"'"+"></div>" +
+                         "</div>";
+        
+        $('.container-fluid').append(contenedor);
+        // $('#menu').empty();
+        var item = 
+            "<div id = 'particulasMenu"+visualizador.id+"'"+ "class='particulasMenu' >" +
+            "<h3 class='align-text-top' id='titulo'><span>Menu Particulas</span></h3>"+
             "<ul class='nav flex-column'>" +
 
                 "<li class='nav-item'>" +
                 "<div class='form-check'>" +
-                "<button type='button' class='btn btn-success' id = 'pausa'> Pausa</button ></div>" +
+                "<button type='button' class='btn btn-success' id = 'pausa"+visualizador.id+"'"+"> Pausa</button ></div>" +
                 "</li>" +
 
                 "<li class='nav-item'>" +
                 "<div class='form-check'>" +
-                "<button type='button' class='btn btn-success' id='regresar' + >-5 pasos</button>" +
+                "<button type='button' class='btn btn-success' id='regresar"+visualizador.id+"'" + ">-5 pasos</button>" +
                 "</div>" +
                 "</li>" +
 
                 "<li class='nav-item'>" +
                 "<div class='form-check'>" +
-                "<button type='button' class='btn btn-success' id='avanzar'>+5 pasos</button>" +
+                "<button type='button' class='btn btn-success' id='avanzar"+visualizador.id+"'"+">+5 pasos</button>" +
                 "</div>" +
                 "</li>" +
 
                 "<li class='nav-item'>" +
-                "<p>Paso: <output id='paso'></output></p>" +
+                "<p>Paso: <output id='pos"+visualizador.id+"'"+"></output></p>" +
                 "</li>" +
 
                 "<li class='nav-item'>" +
                 "<div class='form-check'>" +
-                "<input type='checkbox' class='form-check-input' id='Checkpt1'>" +
+                "<input type='checkbox' class='form-check-input' id='Checkpt1"+visualizador.id+"'"+">" +
                 "<label class='form-check-label' for='exampleCheck1'>Trayectorias</label></div>" +
-                "</li>" +                
-
-                "<li class='nav-item'>" +
-                "<div class='form-check'>" +
-                "<input type='checkbox' class='form-check-input' id='Particula'>" +
-                "<label class='form-check-label' for='exmpleparticula'>Particula</label></div>" +
-                "</li>" +
+                "</li>" +       
+                
+                "<div class='aisla-particula' id='aislaParticula"+visualizador.id+"'"+">"+
+                    "<h2>Particula</h2>" +
+                    "<input type='text' id='particula' placeholder='Elija particula'>" +
+                    "<button class = 'btn-success' type='submit' id='aceptar'>Aceptar</button>" +
+                   
+                "</div>" +
             "</ul>";
             
-        $('#menu').append(item);
-        $('#menu').css({ "visibility": "visible", "height": "600px", "width": "250" })
+        $("#menu"+visualizador.id).append(item);
+        $("#menu"+visualizador.id).css({ "visibility": "visible", "height": "600px", "width": "250" })
         
 
     }
-    this.mostrarMenu();  
+    
+    this.mostrarMenu();
+    
+    
         
     
     this.draw = function() {
         var objParticulas=mySelf;
-        this.dibujaCanal = function () {
-            var elemento = document.getElementById('espacio');            
+        
+        this.dibujaCanal = function () {            
+            
+            var elemento = document.getElementById(visualizador.id.toString());   
+            // console.log(visualizador.id.toString());
+            // console.log(typeof(visualizador.id.toString()));
             visualizador.creaEscena(elemento);
             objParticulas.play = true; //Si la escena se ha creado correctamente podemos comenzar la animacion
+            
             objParticulas.funciones = json.canal;
             var barizq = objParticulas.funciones.LBarrier.value;
             var barder = objParticulas.funciones.RBarrier.value;
@@ -168,7 +185,7 @@ function Particulas(visualizador,json) {
             //dibuja particulas y las coloca en la primer posicion
             objParticulas.particulas = json.particles.particle;
             var color = 1;
-            objParticulas.particulas.forEach(function (particula) {//para cada particula se realiza
+            objParticulas.particulas.forEach(function(particula) {//para cada particula se realiza
 
                 var x = particula.pasos[0].x;
                 var y = particula.pasos[0].y;
@@ -206,12 +223,15 @@ function Particulas(visualizador,json) {
                 console.log("terminó particula: " + i);
             }
         }
-        checkbox = document.getElementById("Checkpt1");
+        var pasoID = "pos"+visualizador.id;
+        var checkID = "Checkpt1"+visualizador.id;
+        
+        checkbox = document.getElementById(checkID);        
+        
         if (checkbox.checked == true) {
             this.muestraTray();
         }
-        document.getElementById("paso").innerHTML = this.paso;
-
+        document.getElementById(pasoID).innerHTML = this.paso;
     }
 
     
@@ -243,9 +263,10 @@ function Particulas(visualizador,json) {
     }
 
     this.pause = function () {
-        console.log('click');
+        // console.log('click de: ' + visualizador.id);
         if (this.play == true) {
             this.play = false;
+            console.log(this.play);
 
         } else {
             this.play = true;
@@ -269,50 +290,62 @@ function Particulas(visualizador,json) {
       visualizador.renderer.render(visualizador.scene, visualizador.camera);
     }    
     
-    this.aislaParticula = function (){
-        
-
-            var nuevoItem = "<div id ='particula'>"+
-                                "<h3 class='align-text-top'>Contenedor de la particula</h3>" +
-                                "<div class='particula'></div>"+
+    this.aislaParticula = function (particula, nuevoVisualizador){
+            nuevo = nuevoVisualizador;
+            var nuevoItem = "<div id ='particula"+nuevo.id+"'>"+
+                                "<h3 class='align-text-top'>Particula " + particula + "</h3>" +                                
                             "</div>";
-            $('#espacio').append(nuevoItem);
+            $("#visualizador"+visualizador.id).append(nuevoItem);     
+            object =  eval("new " + json.name + "(nuevo,json)");             
+            object.draw(json);     
+            $('#aislaParticula'+nuevo.id).remove();
+           
             
-        
-        
+            
     }
 
     //EvenListeners: Se usa Jquery para capturar los eventos
     $('document').ready(
 
-        $('#pausa').click(function () {
+        $('#pausa'+visualizador.id).click(function () {
             mySelf.pause();
         }),
 
-        $('#regresar').click(function () {
+        $('#regresar'+visualizador.id).click(function () {
             mySelf.regresar();
         }),
 
-        $('#avanzar').click(function () {
+        $('#avanzar'+visualizador.id).click(function () {
             mySelf.avanzar();
         }),
 
-        $('#Checkpt1').change(function(){
+        $('#Checkpt1'+visualizador.id).change(function(){
             if($(this).is(":checked")){
                 mySelf.muestraTray();
             }
         }),        
 
-        $('#Particula').change(function(){
-            if($(this).is(":checked")){
-                
-                mySelf.aislaParticula();
-            }else{
-                $('#particula').remove();
-                
-            }
+        $('#particula').keyup(function(e){
+            var valor = $(this).val();
+            if(isNaN(valor) || valor == ''){
 
-        })       
+                $('#aceptar').css({ "cursor": "no-drop"})
+                $('#aceptar').prop('disabled', true);
+                
+            } else {
+                $('#aceptar').prop('disabled', false);
+                $('#aceptar').css({ "cursor": "pointer"})
+                $('#aceptar').click(function(){
+                    console.log(e.target);
+                    e.preventDefault();
+                    var nuevo = new Visualizador();                                        
+                    mySelf.aislaParticula(valor, nuevo);
+                    
+                    $('#particula').val('');
+                });
+            }
+        }).keyup()
+        
     );
 
 }
@@ -326,6 +359,7 @@ Particulas.prototype.animate = function (visualizador, objParticulas) {
             if (objParticulas.play != false) {
                 objParticulas.paso++;
                 objParticulas.setPos();
+                console.log('me invocaron');
             }
             //objParticulas.paso++;
 
