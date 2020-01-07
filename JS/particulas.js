@@ -290,7 +290,7 @@ function Particulas(visualizador,json) {
       visualizador.renderer.render(visualizador.scene, visualizador.camera);
     }    
     
-    this.aislaParticula = function (particula, nuevoVisualizador){
+    this.aislaParticula = function (particula, nuevoVisualizador, e){
             nuevo = nuevoVisualizador;
             var nuevoItem = "<div id ='particula"+nuevo.id+"'>"+
                                 "<h3 class='align-text-top'>Particula " + particula + "</h3>" +                                
@@ -299,7 +299,7 @@ function Particulas(visualizador,json) {
             object =  eval("new " + json.name + "(nuevo,json)");             
             object.draw(json);     
             $('#aislaParticula'+nuevo.id).remove();
-           
+            return false;
             
             
     }
@@ -331,19 +331,20 @@ function Particulas(visualizador,json) {
 
                 $('#aceptar').css({ "cursor": "no-drop"})
                 $('#aceptar').prop('disabled', true);
-                
+                return false;
             } else {
                 $('#aceptar').prop('disabled', false);
                 $('#aceptar').css({ "cursor": "pointer"})
                 $('#aceptar').click(function(){
-                    console.log(e.target);
-                    e.preventDefault();
+                    console.log(e.target);                    
                     var nuevo = new Visualizador();                                        
-                    mySelf.aislaParticula(valor, nuevo);
+                    mySelf.aislaParticula(valor, nuevo,e);
                     
                     $('#particula').val('');
+                    return false;
                 });
             }
+            return false;
         }).keyup()
         
     );
