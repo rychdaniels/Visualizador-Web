@@ -325,27 +325,29 @@ function Particulas(visualizador,json) {
             }
         }),        
 
-        $('#particula').keyup(function(e){
+        $('#particula').keyup(function(){
             var valor = $(this).val();
             if(isNaN(valor) || valor == ''){
 
                 $('#aceptar').css({ "cursor": "no-drop"})
                 $('#aceptar').prop('disabled', true);
-                return false;
             } else {
                 $('#aceptar').prop('disabled', false);
-                $('#aceptar').css({ "cursor": "pointer"})
-                $('#aceptar').click(function(){
-                    console.log(e.target);                    
-                    var nuevo = new Visualizador();                                        
-                    mySelf.aislaParticula(valor, nuevo,e);
+                $('#aceptar').css({ "cursor": "pointer"})               
+                
+                $('#aceptar').click(function(e){                    
                     
-                    $('#particula').val('');
-                    return false;
+                    if(e.handled !== true){                        
+                        var nuevo = new Visualizador();                                        
+                        mySelf.aislaParticula(valor, nuevo,e);
+                        $('#particula').val('');
+                        e.handled = true;
+                    }
                 });
             }
-            return false;
+            
         }).keyup()
+        
         
     );
 
@@ -360,7 +362,7 @@ Particulas.prototype.animate = function (visualizador, objParticulas) {
             if (objParticulas.play != false) {
                 objParticulas.paso++;
                 objParticulas.setPos();
-                console.log('me invocaron');
+                // console.log('me invocaron');
             }
             //objParticulas.paso++;
 
