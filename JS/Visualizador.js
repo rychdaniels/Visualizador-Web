@@ -7,6 +7,8 @@ function Visualizador() {
     this.controls;
     this.bandera = false;
     this.json;
+    var vdate=  new Date();
+    this.id= vdate.getTime();
     this.renderer = new THREE.WebGLRenderer();
     
     
@@ -25,8 +27,7 @@ function Visualizador() {
 }
 
 
-Visualizador.prototype.creaEscena = function (elemento) {
-    
+Visualizador.prototype.creaEscena = function (elemento) {   
     var aspect = elemento.clientWidth / elemento.clientHeight;
     
     this.renderer.setSize(elemento.clientWidth, elemento.clientHeight - 20);
