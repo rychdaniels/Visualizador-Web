@@ -53,7 +53,7 @@ function Particulas(visualizador,json) {
                 
                 "<div class='aisla-particula' id='aislaParticula"+visualizador.id+"'"+">"+
                     "<h2>Particula</h2>" +
-                    "<input type='text' id='particula' placeholder='Elija particula'>" +
+                    "<input type='number'id='particula' placeholder='Elija particula'>" +
                     "<button class = 'btn-success' type='submit' id='aceptar'>Aceptar</button>" +
                    
                 "</div>" +
@@ -76,7 +76,7 @@ function Particulas(visualizador,json) {
         this.dibujaCanal = function () {            
             
             var elemento = document.getElementById(visualizador.id.toString());   
-            // console.log(visualizador.id.toString());
+            // console.log("visualizador"+ visualizador.id.toString());
             // console.log(typeof(visualizador.id.toString()));
             visualizador.creaEscena(elemento);
             objParticulas.play = true; //Si la escena se ha creado correctamente podemos comenzar la animacion
@@ -220,7 +220,7 @@ function Particulas(visualizador,json) {
                 this.pars[i].position.setY(y);
                 this.trays[i].push({ "x": x, "y": y });
             } else if (this.paso == this.particulas[i].pasos.length) {
-                console.log("terminó particula: " + i);
+                // console.log("terminó particula: " + i);
             }
         }
         var pasoID = "pos"+visualizador.id;
@@ -290,20 +290,20 @@ function Particulas(visualizador,json) {
       visualizador.renderer.render(visualizador.scene, visualizador.camera);
     }    
     
-    this.aislaParticula = function (particula, nuevoVisualizador, e){
-            nuevo = nuevoVisualizador;
-            var nuevoItem = "<div id ='particula"+nuevo.id+"'>"+
-                                "<h3 class='align-text-top'>Particula " + particula + "</h3>" +                                
-                            "</div>";
-            $("#visualizador"+visualizador.id).append(nuevoItem);     
-            object =  eval("new " + json.name + "(nuevo,json)");             
+    this.aislaParticula = function (particula, nuevoVisualizador){
+            var nuevoItem = "<div class='nuevo' id ='particula"+nuevoVisualizador.id+"'>"+
+                                "<button class='btn btn-block btn-primary btn-titulo' align='left' disabled>Particula " + particula + "</button>" +
+                            "</div>";            
+            object =  eval("new " + json.name + "(nuevoVisualizador,json)");             
             object.draw(json);     
-            $('#aislaParticula'+nuevo.id).remove();
-            return false;
-            
-            
-    }
 
+            $('#visualizador'+nuevoVisualizador.id).before(nuevoItem); 
+            $('#aislaParticula'+nuevoVisualizador.id).remove();
+            
+            
+            
+    } 
+     
     //EvenListeners: Se usa Jquery para capturar los eventos
     $('document').ready(
 
@@ -325,30 +325,16 @@ function Particulas(visualizador,json) {
             }
         }),        
 
-        $('#particula').keyup(function(){
-            var valor = $(this).val();
-            if(isNaN(valor) || valor == ''){
-
-                $('#aceptar').css({ "cursor": "no-drop"})
-                $('#aceptar').prop('disabled', true);
-            } else {
-                $('#aceptar').prop('disabled', false);
-                $('#aceptar').css({ "cursor": "pointer"})               
-                
-                $('#aceptar').click(function(e){                    
-                    
-                    if(e.handled !== true){                        
-                        var nuevo = new Visualizador();                                        
-                        mySelf.aislaParticula(valor, nuevo,e);
-                        $('#particula').val('');
-                        e.handled = true;
-                    }
-                });
-            }
+        $('#aceptar').click(function(e){
+            var valor = $('#particula').val();
             
-        }).keyup()
-        
-        
+            if( valor == ''){
+                e.preventDefault();
+            } else {                
+                mySelf.aislaParticula(valor, new Visualizador());
+                $('#particula').val('');                 
+            }
+        })
     );
 
 }
