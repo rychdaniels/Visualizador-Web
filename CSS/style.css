@@ -51,7 +51,10 @@ body {
   max-width: 110em;
   
 }
-
+#titulo, #menu{
+  margin: 0px;
+  padding: 0px;
+}
 .container, .particula {
   position: relative;
   padding: 0;
@@ -238,8 +241,15 @@ a:hover {
   width: 90%;
 }
 
-.row{
-  margin-bottom: 10px;
+.nuevo{
+  margin-top: 30px;
+}
+
+.btn-titulo{
+  font-size: 30px;
+  font-weight: bold;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-style: italic;
 }
 
 /*
