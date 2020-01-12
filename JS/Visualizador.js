@@ -41,8 +41,6 @@ Visualizador.prototype.creaEscena = function (elemento) {
 
     this.camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
     this.camera.position.set(0, 0, 1);
-    console.log("Padre " + elemento.parentNode);
-    
     elemento.appendChild(this.renderer.domElement);
 }
 

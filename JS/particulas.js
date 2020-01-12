@@ -9,6 +9,8 @@ function Particulas(visualizador,json) {
     this.trays = [];//posiciones
     this.trayso = [];//lineas
     this.play = false;
+    this.aislar = false;
+    this.numeroParticula = 0;
 
 	
     this.mostrarMenu = function () {
@@ -53,7 +55,7 @@ function Particulas(visualizador,json) {
                 
                 "<div class='aisla-particula' id='aislaParticula"+visualizador.id+"'"+">"+
                     "<h2>Particula</h2>" +
-                    "<input type='number'id='particula' placeholder='Elija particula'>" +
+                    "<input type='number' min='0' max='5' required='required' id='particula' placeholder='Elija particula'>" +
                     "<button class = 'btn-success' type='submit' id='aceptar'>Aceptar</button>" +
                    
                 "</div>" +
@@ -76,7 +78,7 @@ function Particulas(visualizador,json) {
         this.dibujaCanal = function () {            
             
             var elemento = document.getElementById(visualizador.id.toString());   
-            // console.log("visualizador"+ visualizador.id.toString());
+            // console.log("visualizador desde dibuja canal"+ visualizador.id.toString());
             // console.log(typeof(visualizador.id.toString()));
             visualizador.creaEscena(elemento);
             objParticulas.play = true; //Si la escena se ha creado correctamente podemos comenzar la animacion
@@ -205,33 +207,58 @@ function Particulas(visualizador,json) {
                 color += 100;
             });
             
-
+            console.log("visualizador" + visualizador.id);
+            
             objParticulas.animate(visualizador, objParticulas);
         }
         this.dibujaParticulas();
     }
 
-    this.setPos = function () {
-        for (var i = 0; i < this.particulas.length; i++) {
-            if (this.paso < this.particulas[i].pasos.length) {
-                var x = parseFloat(this.particulas[i].pasos[this.paso].x);
-                var y = parseFloat(this.particulas[i].pasos[this.paso].y);
-                this.pars[i].position.setX(x);
-                this.pars[i].position.setY(y);
-                this.trays[i].push({ "x": x, "y": y });
-            } else if (this.paso == this.particulas[i].pasos.length) {
-                // console.log("terminó particula: " + i);
+    this.setPos = function ( aislar = false, numeroParticula = 0 ) {
+        
+        if ( aislar == false ) {
+            for (var i = 0; i < this.particulas.length; i++) {
+                if (this.paso < this.particulas[i].pasos.length) {
+                    var x = parseFloat(this.particulas[i].pasos[this.paso].x);
+                    var y = parseFloat(this.particulas[i].pasos[this.paso].y);
+                    this.pars[i].position.setX(x);
+                    this.pars[i].position.setY(y);
+                    this.trays[i].push({ "x": x, "y": y });
+                } else if (this.paso == this.particulas[i].pasos.length) {
+                    // console.log("terminó particula: " + i);
+                }
             }
+            var pasoID = "pos"+visualizador.id;
+            var checkID = "Checkpt1"+visualizador.id;
+            
+            checkbox = document.getElementById(checkID);        
+            
+            if (checkbox.checked == true) {
+                this.muestraTray();
+            }
+            document.getElementById(pasoID).innerHTML = this.paso;
+        } else {
+            for (var i = 0; i < this.particulas.length; i++) {
+                if (this.paso < this.particulas[numeroParticula].pasos.length) {
+                    var x = parseFloat(this.particulas[numeroParticula].pasos[this.paso].x);
+                    var y = parseFloat(this.particulas[numeroParticula].pasos[this.paso].y);
+                    this.pars[numeroParticula].position.setX(x);
+                    this.pars[numeroParticula].position.setY(y);
+                    this.trays[numeroParticula].push({ "x": x, "y": y });
+                } else if (this.paso == this.particulas[numeroParticula].pasos.length) {
+                    // console.log("terminó particula: " + i);
+                }
+            }
+            var pasoID = "pos"+visualizador.id;
+            var checkID = "Checkpt1"+visualizador.id;
+            
+            checkbox = document.getElementById(checkID);        
+            
+            if (checkbox.checked == true) {
+                this.muestraTray();
+            }
+            document.getElementById(pasoID).innerHTML = this.paso;
         }
-        var pasoID = "pos"+visualizador.id;
-        var checkID = "Checkpt1"+visualizador.id;
-        
-        checkbox = document.getElementById(checkID);        
-        
-        if (checkbox.checked == true) {
-            this.muestraTray();
-        }
-        document.getElementById(pasoID).innerHTML = this.paso;
     }
 
     
@@ -262,6 +289,9 @@ function Particulas(visualizador,json) {
 
     }
 
+
+    
+
     this.pause = function () {
         // console.log('click de: ' + visualizador.id);
         if (this.play == true) {
@@ -291,12 +321,17 @@ function Particulas(visualizador,json) {
     }    
     
     this.aislaParticula = function (particula, nuevoVisualizador){
+            nuevoVisualizador.bandera = true;
             var nuevoItem = "<div class='nuevo' id ='particula"+nuevoVisualizador.id+"'>"+
                                 "<button class='btn btn-block btn-primary btn-titulo' align='left' disabled>Particula " + particula + "</button>" +
                             "</div>";            
-            object =  eval("new " + json.name + "(nuevoVisualizador,json)");             
+            object =  eval("new " + json.name + "(nuevoVisualizador,json)");       
+            object.aisla = true;
+            object.numeroParticula = particula;
             object.draw(json);     
+            
 
+            console.log('nuevoVisualizador' + nuevoVisualizador.id);
             $('#visualizador'+nuevoVisualizador.id).before(nuevoItem); 
             $('#aislaParticula'+nuevoVisualizador.id).remove();
             
@@ -309,6 +344,7 @@ function Particulas(visualizador,json) {
 
         $('#pausa'+visualizador.id).click(function () {
             mySelf.pause();
+            console.log(mySelf.aislar);
         }),
 
         $('#regresar'+visualizador.id).click(function () {
@@ -326,11 +362,11 @@ function Particulas(visualizador,json) {
         }),        
 
         $('#aceptar').click(function(e){
-            var valor = $('#particula').val();
-            
+            var valor = $('#particula').val();            
             if( valor == ''){
                 e.preventDefault();
-            } else {                
+            } else {         
+                console.log("Desde else " + visualizador.id);       
                 mySelf.aislaParticula(valor, new Visualizador());
                 $('#particula').val('');                 
             }
@@ -340,14 +376,13 @@ function Particulas(visualizador,json) {
 }
 
 
-Particulas.prototype.animate = function (visualizador, objParticulas) { 
-    
+Particulas.prototype.animate = function (visualizador, objParticulas) {     
     
     function avanza() {
         if (visualizador.bandera != false) {
             if (objParticulas.play != false) {
                 objParticulas.paso++;
-                objParticulas.setPos();
+                objParticulas.setPos(objParticulas.aisla, objParticulas.numeroParticula);
                 // console.log('me invocaron');
             }
             //objParticulas.paso++;
