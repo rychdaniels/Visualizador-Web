@@ -55,6 +55,13 @@ body {
   margin: 0px;
   padding: 0px;
 }
+
+#mensaje{
+  background: #D80D0D;
+  color: #fff;
+  border-radius: 15px;
+  display: block;
+}
 .container, .particula {
   position: relative;
   padding: 0;

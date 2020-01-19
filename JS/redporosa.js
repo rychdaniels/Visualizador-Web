@@ -2,11 +2,19 @@ function RedPorosa (visualizador,json){
   var mySelf = this;
   this.redporosa = [];
   this.colorsp = {};
-
   this.mostrarMenu = function () {
-    $('#menu').empty();
-    var item = "<h3 class='align-text-top' id='titulo'><span>Menu Red Porosa</span></h3>" +
-        "<div id = 'particulasMenu' class='particulasMenu' >" + 
+    $('.container-fluid').empty();
+    // "<h3 class='align-text-top' id='titulo'><span>Menu Red Porosa</span></h3>" +
+    var contenedor= "<div class='row' id='visualizador"+visualizador.id+"'"+">"+
+                        " <div class='container col-sm-10' id='"+visualizador.id+"'"+"></div> " +
+                         "<div class='d-none d-md-block bg-light sidebar col-sm-2' id='menu"+visualizador.id+"'"+"></div>" +
+                         "</div>";
+        
+    $('.container-fluid').append(contenedor);
+
+    var item =           
+        "<div id = 'particulasMenu'"+ "class='particulasMenu' >" +
+        "<h3 class='align-text-top' id='titulo'><span>Menu Red Porosa</span></h3>"+
        " <ul class='nav flex-column' id='vor'>"+
           "<li class='nav-item'>"+
             "<div class='form-check'>"+
@@ -30,14 +38,14 @@ function RedPorosa (visualizador,json){
         "</ul>"+
       "</div>"
 
-    $('#menu').append(item);
-    $('#menu').css({ "visibility": "visible", "height": "600px", "width": "250" })
+    $('#menu'+visualizador.id).append(item);
+    $('#menu'+visualizador.id).css({ "visibility": "visible", "height": "600px", "width": "250" })
   }
   this.mostrarMenu();
 
 
   this.draw = function() {
-    var elemento = document.getElementById('espacio');
+    var elemento = document.getElementById(visualizador.id.toString());       
     visualizador.creaEscena(elemento);
     visualizador.camera.position.set(350, 350, 700);      
     

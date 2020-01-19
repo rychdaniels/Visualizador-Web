@@ -5,7 +5,14 @@ function Voronio(visualizador,json) {
 
 
     this.mostrarMenu = function () {
-      $('#menu').empty();
+      $('.container-fluid').empty();
+      var contenedor= "<div class='row' id='visualizador"+visualizador.id+"'"+">"+
+                        " <div class='container col-sm-10' id='"+visualizador.id+"'"+"></div> " +
+                         "<div class='d-none d-md-block bg-light sidebar col-sm-2' id='menu"+visualizador.id+"'"+"></div>" +
+                         "</div>";
+      
+      $('.container-fluid').append(contenedor);
+
       var item = "<h3 class='align-text-top' id='titulo'><span>Menu Voronoi</span></h3>" +
           "<div id = 'particulasMenu' class='particulasMenu' >" + 
          " <ul class='nav flex-column' id='vor'>"+
@@ -31,8 +38,8 @@ function Voronio(visualizador,json) {
           "</ul>"+
         "</div>"
 
-      $('#menu').append(item);
-      $('#menu').css({ "visibility": "visible", "height": "600px", "width": "250" })
+      $('#menu'+visualizador.id).append(item);
+      $('#menu'+visualizador.id).css({ "visibility": "visible", "height": "600px", "width": "250" })
   }
   this.mostrarMenu();
     /**recibe el checkbox que activo el evento y el RGB del color que se quiere la escala
@@ -96,7 +103,7 @@ function Voronio(visualizador,json) {
       puntos = json.p;
       /**funcion llamada desde index.js recibe un arreglo con las posiciones y color de cada punto
          se crean en conjunto de cada color y se agregan a escena**/
-      var elemento = document.getElementById('espacio');
+      var elemento = document.getElementById(visualizador.id.toString());
       visualizador.creaEscena(elemento);
       visualizador.camera.position.set(350,350,350);
       visualizador.controls = new THREE.OrbitControls(visualizador.camera, visualizador.renderer.domElement);
