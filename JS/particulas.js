@@ -9,9 +9,12 @@ function Particulas(visualizador,json) {
     this.trays = [];//posiciones
     this.trayso = [];//lineas
     this.play = false;
+    this.aislar = false;
+    this.numeroParticula = 0;
 
 	
     this.mostrarMenu = function () {
+        $('.container-fluid').empty();
         var contenedor= "<div class='row' id='visualizador"+visualizador.id+"'"+">"+
                         " <div class='container col-sm-10' id='"+visualizador.id+"'"+"></div> " +
                          "<div class='d-none d-md-block bg-light sidebar col-sm-2' id='menu"+visualizador.id+"'"+"></div>" +
@@ -53,7 +56,7 @@ function Particulas(visualizador,json) {
                 
                 "<div class='aisla-particula' id='aislaParticula"+visualizador.id+"'"+">"+
                     "<h2>Particula</h2>" +
-                    "<input type='number'id='particula' placeholder='Elija particula'>" +
+                    "<input type='number' min='0' max='4' id='particula' placeholder='Elija particula'>" +
                     "<button class = 'btn-success' type='submit' id='aceptar'>Aceptar</button>" +
                    
                 "</div>" +
@@ -76,7 +79,7 @@ function Particulas(visualizador,json) {
         this.dibujaCanal = function () {            
             
             var elemento = document.getElementById(visualizador.id.toString());   
-            // console.log("visualizador"+ visualizador.id.toString());
+            // console.log("visualizador desde dibuja canal"+ visualizador.id.toString());
             // console.log(typeof(visualizador.id.toString()));
             visualizador.creaEscena(elemento);
             objParticulas.play = true; //Si la escena se ha creado correctamente podemos comenzar la animacion
@@ -184,7 +187,9 @@ function Particulas(visualizador,json) {
 
             //dibuja particulas y las coloca en la primer posicion
             objParticulas.particulas = json.particles.particle;
+
             var color = 1;
+            
             objParticulas.particulas.forEach(function(particula) {//para cada particula se realiza
 
                 var x = particula.pasos[0].x;
@@ -195,43 +200,67 @@ function Particulas(visualizador,json) {
 
                 var material = new THREE.MeshBasicMaterial({ color: aux });
                 var sphere = new THREE.Mesh(p, material);
+                
                 sphere.position.x = parseInt(x);
-
-                sphere.position.y = parseInt(y);
+                sphere.position.y = parseInt(y);                
                 visualizador.scene.add(sphere);
                 objParticulas.pars.push(sphere);
 
                 objParticulas.trays.push([{ "x": x, "y": y }]);//se guarda pos para las trayectorias
+                
                 color += 100;
             });
             
-
+            // console.log("visualizador" + visualizador.id);
             objParticulas.animate(visualizador, objParticulas);
         }
         this.dibujaParticulas();
     }
 
-    this.setPos = function () {
-        for (var i = 0; i < this.particulas.length; i++) {
-            if (this.paso < this.particulas[i].pasos.length) {
-                var x = parseFloat(this.particulas[i].pasos[this.paso].x);
-                var y = parseFloat(this.particulas[i].pasos[this.paso].y);
-                this.pars[i].position.setX(x);
-                this.pars[i].position.setY(y);
-                this.trays[i].push({ "x": x, "y": y });
-            } else if (this.paso == this.particulas[i].pasos.length) {
-                // console.log("terminó particula: " + i);
+    this.setPos = function ( aislar = false, numeroParticula = null ) {
+        
+        if ( aislar == false ) {
+            for (var i = 0; i < this.particulas.length; i++) {
+                if (this.paso < this.particulas[i].pasos.length) {
+                    var x = parseFloat(this.particulas[i].pasos[this.paso].x);
+                    var y = parseFloat(this.particulas[i].pasos[this.paso].y);
+                    this.pars[i].position.setX(x);
+                    this.pars[i].position.setY(y);
+                    this.trays[i].push({ "x": x, "y": y });
+                } else if (this.paso == this.particulas[i].pasos.length) {
+                    // console.log("terminó particula: " + i);
+                }
             }
+            var pasoID = "pos"+visualizador.id;
+            var checkID = "Checkpt1"+visualizador.id;
+            
+            checkbox = document.getElementById(checkID);        
+            
+            if (checkbox.checked == true) {
+                this.muestraTray();
+            }
+            document.getElementById(pasoID).innerHTML = this.paso;
+        } else {
+
+            if (this.paso < this.particulas[numeroParticula].pasos.length) {
+                
+                var x = parseFloat(this.particulas[numeroParticula].pasos[this.paso].x);
+                var y = parseFloat(this.particulas[numeroParticula].pasos[this.paso].y);
+                this.pars[numeroParticula].position.setX(x);
+                this.pars[numeroParticula].position.setY(y);
+                this.trays[numeroParticula].push({ "x": x, "y": y });
+            }
+            var pasoID = "pos"+visualizador.id;
+            var checkID = "Checkpt1"+visualizador.id;
+            
+            checkbox = document.getElementById(checkID);        
+            
+            if (checkbox.checked == true) {
+                this.muestraTray();
+            }
+            document.getElementById(pasoID).innerHTML = this.paso;
         }
-        var pasoID = "pos"+visualizador.id;
-        var checkID = "Checkpt1"+visualizador.id;
-        
-        checkbox = document.getElementById(checkID);        
-        
-        if (checkbox.checked == true) {
-            this.muestraTray();
-        }
-        document.getElementById(pasoID).innerHTML = this.paso;
+        // console.log('Desde setPos, aislar = ' + this.aislar + "Visualizador " + visualizador.id);
     }
 
     
@@ -262,12 +291,14 @@ function Particulas(visualizador,json) {
 
     }
 
+
+    
+
     this.pause = function () {
         // console.log('click de: ' + visualizador.id);
         if (this.play == true) {
             this.play = false;
-            console.log(this.play);
-
+            // console.log(this.play);
         } else {
             this.play = true;
         }
@@ -277,7 +308,8 @@ function Particulas(visualizador,json) {
     this.regresar = function () {
       this.play = false;
       this.paso -= 5;
-      this.setPos();
+      this.aislar = true;      
+      this.setPos(this.aislar, this.numeroParticula);
       visualizador.renderer.render(visualizador.scene, visualizador.camera);
     }
 
@@ -286,29 +318,66 @@ function Particulas(visualizador,json) {
     this.avanzar = function () {
       this.play = false;
       this.paso += 5;
-      this.setPos();
+      this.aislar = true;      
+      this.setPos(this.aislar, this.numeroParticula);
       visualizador.renderer.render(visualizador.scene, visualizador.camera);
-    }    
+    }      
     
-    this.aislaParticula = function (particula, nuevoVisualizador){
-            var nuevoItem = "<div class='nuevo' id ='particula"+nuevoVisualizador.id+"'>"+
-                                "<button class='btn btn-block btn-primary btn-titulo' align='left' disabled>Particula " + particula + "</button>" +
-                            "</div>";            
-            object =  eval("new " + json.name + "(nuevoVisualizador,json)");             
-            object.draw(json);     
+    
+    
+    this.aislaParticula = function (particula, nuevoVisualizador){      
 
-            $('#visualizador'+nuevoVisualizador.id).before(nuevoItem); 
-            $('#aislaParticula'+nuevoVisualizador.id).remove();
+        if( particula > this.particulas.length ){
+            const mensaje = "<div id = 'mensaje'>"+
+                                "<h3>Valor inválido</h3>"
+                            "</div>";
             
+            $('#aceptar').after(mensaje); 
+            setTimeout( () => {
+                $('#mensaje').remove();   
+                
+            },1500 );
             
+            return false;
+        }
+        nuevoVisualizador.bandera = true;
+        var nuevoItem = "<div class='nuevo' id ='particula"+nuevoVisualizador.id+"'>"+
+                            "<div class='row'>"+
+                                "<button class='btn btn-block btn-info btn-titulo col-sm-8' disabled>Particula " + particula + "</button>" +
+                                "<button class='btn btn-danger btn-titulo col-sm-4' id='quitar"+nuevoVisualizador.id+"'> Quitar </button>" +
+                            "</div>"           
+                        "</div>";         
+        object =  eval("new " + json.name + "(nuevoVisualizador,json)");       
+        object.aisla = true;
+        object.numeroParticula = particula;
+        object.draw(json);     
+        
+        // console.log('nuevoVisualizador' + nuevoVisualizador.id);
+        $('#visualizador'+nuevoVisualizador.id).before(nuevoItem); 
+        $('#aislaParticula'+nuevoVisualizador.id).remove();
+        
+        $('#quitar'+nuevoVisualizador.id).click(function(){
+            // console.log('click');
+            var respuesta = confirm("Desea eliminar el visualizador de particula #" + particula);
+            if( respuesta ) {
+                object = {};
+                $('#particula'+nuevoVisualizador.id).remove();
+                $('#visualizador'+nuevoVisualizador.id).remove();
+            } else {
+                return false;
+            }
             
-    } 
+        })  
+    }
+    
+    
      
     //EvenListeners: Se usa Jquery para capturar los eventos
     $('document').ready(
 
         $('#pausa'+visualizador.id).click(function () {
             mySelf.pause();
+            console.log(mySelf.aislar);
         }),
 
         $('#regresar'+visualizador.id).click(function () {
@@ -325,29 +394,33 @@ function Particulas(visualizador,json) {
             }
         }),        
 
+      
+
         $('#aceptar').click(function(e){
-            var valor = $('#particula').val();
             
-            if( valor == ''){
+            var valor = $('#particula').val();            
+            if( valor == ''){   
+                              
                 e.preventDefault();
-            } else {                
+            } else {         
                 mySelf.aislaParticula(valor, new Visualizador());
                 $('#particula').val('');                 
             }
-        })
+        }),
+
+        
     );
 
 }
 
 
-Particulas.prototype.animate = function (visualizador, objParticulas) { 
-    
+Particulas.prototype.animate = function (visualizador, objParticulas) {     
     
     function avanza() {
         if (visualizador.bandera != false) {
             if (objParticulas.play != false) {
                 objParticulas.paso++;
-                objParticulas.setPos();
+                objParticulas.setPos(objParticulas.aisla, objParticulas.numeroParticula);
                 // console.log('me invocaron');
             }
             //objParticulas.paso++;
