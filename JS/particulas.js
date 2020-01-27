@@ -10,11 +10,11 @@ function Particulas(visualizador,json) {
     this.trayso = [];//lineas
     this.play = false;
     this.aislar = false;
-    this.numeroParticula = 0;
+    this.numeroParticula = null;
 
 	
     this.mostrarMenu = function () {
-        $('.container-fluid').empty();
+        // $('.container-fluid').empty();
         var contenedor= "<div class='row' id='visualizador"+visualizador.id+"'"+">"+
                         " <div class='container col-sm-10' id='"+visualizador.id+"'"+"></div> " +
                          "<div class='d-none d-md-block bg-light sidebar col-sm-2' id='menu"+visualizador.id+"'"+"></div>" +
@@ -182,37 +182,63 @@ function Particulas(visualizador,json) {
         }
 
 
-        this.dibujaParticulas = function () {
+        this.dibujaParticulas = function ( ) {
             this.dibujaCanal();
-
-            //dibuja particulas y las coloca en la primer posicion
-            objParticulas.particulas = json.particles.particle;
-
-            var color = 1;
             
-            objParticulas.particulas.forEach(function(particula) {//para cada particula se realiza
-
-                var x = particula.pasos[0].x;
-                var y = particula.pasos[0].y;
-                var p = new THREE.SphereGeometry(.01, 10, 10); //(radio, ..., ...)
-                var aux = color * 111111;
-                objParticulas.color.push(aux);
-
-                var material = new THREE.MeshBasicMaterial({ color: aux });
-                var sphere = new THREE.Mesh(p, material);
+            var color = 1 + this.numeroParticula * 100;            
+            if ( this.aislar ) {
                 
-                sphere.position.x = parseInt(x);
-                sphere.position.y = parseInt(y);                
-                visualizador.scene.add(sphere);
-                objParticulas.pars.push(sphere);
-
-                objParticulas.trays.push([{ "x": x, "y": y }]);//se guarda pos para las trayectorias
+                objParticulas.particulas = {};
+                objParticulas.particulas = json.particles.particle[this.numeroParticula];
                 
-                color += 100;
-            });
-            
-            // console.log("visualizador" + visualizador.id);
+                // objParticulas.particulas.forEach(function(particula) {
+                    // console.log('forEach ' + particula[this.numeroParticula]);                    
+                    var x = objParticulas.particulas.pasos[0].x;
+                    var y = objParticulas.particulas.pasos[0].y;     
+                         
+                    var p = new THREE.SphereGeometry(.01, 10, 10); //(radio, ..., ...)
+                    var aux = color * 111111;
+                    objParticulas.color.push(aux);
+                    // 
+                    var material = new THREE.MeshBasicMaterial({ color: aux });
+                    var sphere = new THREE.Mesh(p, material);
+                    // 
+                    sphere.position.x = parseFloat(x);
+                    sphere.position.y = parseFloat(y);                
+                    visualizador.scene.add(sphere);
+                    objParticulas.pars.push(sphere);    
+                    objParticulas.trays.push([{ "x": x, "y": y }]);//se guarda pos para las trayectorias
+                    
+                    // color += 100;
+
+
+                // });
+            } else {
+                objParticulas.particulas = json.particles.particle;
+                
+                //dibuja particulas y las coloca en la primer posicion
+                objParticulas.particulas.forEach(function(particula) {//para cada particula se realiza
+    
+                    var x = particula.pasos[0].x;
+                    var y = particula.pasos[0].y;
+                    var p = new THREE.SphereGeometry(.01, 10, 10); //(radio, ..., ...)
+                    var aux = color * 111111;
+                    objParticulas.color.push(aux);
+    
+                    var material = new THREE.MeshBasicMaterial({ color: aux });
+                    var sphere = new THREE.Mesh(p, material);
+                    
+                    sphere.position.x = parseFloat(x);
+                    sphere.position.y = parseFloat(y);                
+                    visualizador.scene.add(sphere);
+                    objParticulas.pars.push(sphere);
+                    objParticulas.trays.push([{ "x": x, "y": y }]);//se guarda pos para las trayectorias
+                    
+                    color += 100;
+                });
+            }
             objParticulas.animate(visualizador, objParticulas);
+            
         }
         this.dibujaParticulas();
     }
@@ -220,16 +246,18 @@ function Particulas(visualizador,json) {
     this.setPos = function ( aislar = false, numeroParticula = null ) {
         
         if ( aislar == false ) {
+            
             for (var i = 0; i < this.particulas.length; i++) {
                 if (this.paso < this.particulas[i].pasos.length) {
                     var x = parseFloat(this.particulas[i].pasos[this.paso].x);
                     var y = parseFloat(this.particulas[i].pasos[this.paso].y);
-                    this.pars[i].position.setX(x);
+                    console.log(this.pars);
+                    this.pars[i].position.setX(x);                    
                     this.pars[i].position.setY(y);
                     this.trays[i].push({ "x": x, "y": y });
-                } else if (this.paso == this.particulas[i].pasos.length) {
-                    // console.log("terminó particula: " + i);
                 }
+                
+
             }
             var pasoID = "pos"+visualizador.id;
             var checkID = "Checkpt1"+visualizador.id;
@@ -240,15 +268,16 @@ function Particulas(visualizador,json) {
                 this.muestraTray();
             }
             document.getElementById(pasoID).innerHTML = this.paso;
-        } else {
+        } else {            
 
-            if (this.paso < this.particulas[numeroParticula].pasos.length) {
-                
-                var x = parseFloat(this.particulas[numeroParticula].pasos[this.paso].x);
-                var y = parseFloat(this.particulas[numeroParticula].pasos[this.paso].y);
-                this.pars[numeroParticula].position.setX(x);
-                this.pars[numeroParticula].position.setY(y);
-                this.trays[numeroParticula].push({ "x": x, "y": y });
+            
+            if (this.paso < this.particulas.pasos.length) {   
+                var x = parseFloat(this.particulas.pasos[this.paso].x);
+                var y = parseFloat(this.particulas.pasos[this.paso].y);                
+                // console.log(this.pars);
+                this.pars[0].position.setX(x);
+                this.pars[0].position.setY(y);
+                this.trays[0].push({ "x": x, "y": y });
             }
             var pasoID = "pos"+visualizador.id;
             var checkID = "Checkpt1"+visualizador.id;
@@ -326,8 +355,8 @@ function Particulas(visualizador,json) {
     
     
     this.aislaParticula = function (particula, nuevoVisualizador){      
-
-        if( particula > this.particulas.length ){
+        
+        if( particula >= this.particulas.length ){
             const mensaje = "<div id = 'mensaje'>"+
                                 "<h3>Valor inválido</h3>"
                             "</div>";
@@ -340,7 +369,10 @@ function Particulas(visualizador,json) {
             
             return false;
         }
+        
         nuevoVisualizador.bandera = true;
+        
+
         var nuevoItem = "<div class='nuevo' id ='particula"+nuevoVisualizador.id+"'>"+
                             "<div class='row'>"+
                                 "<button class='btn btn-block btn-info btn-titulo col-sm-8' disabled>Particula " + particula + "</button>" +
@@ -348,7 +380,7 @@ function Particulas(visualizador,json) {
                             "</div>"           
                         "</div>";         
         object =  eval("new " + json.name + "(nuevoVisualizador,json)");       
-        object.aisla = true;
+        object.aislar = true;
         object.numeroParticula = particula;
         object.draw(json);     
         
@@ -420,7 +452,8 @@ Particulas.prototype.animate = function (visualizador, objParticulas) {
         if (visualizador.bandera != false) {
             if (objParticulas.play != false) {
                 objParticulas.paso++;
-                objParticulas.setPos(objParticulas.aisla, objParticulas.numeroParticula);
+                
+                objParticulas.setPos(objParticulas.aislar, objParticulas.numeroParticula);
                 // console.log('me invocaron');
             }
             //objParticulas.paso++;
