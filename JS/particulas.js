@@ -69,10 +69,7 @@ function Particulas(visualizador,json) {
     }
     
     this.mostrarMenu();
-    
-    
-        
-    
+
     this.draw = function() {
         var objParticulas=mySelf;
         
@@ -186,33 +183,25 @@ function Particulas(visualizador,json) {
             this.dibujaCanal();
             
             var color = 1 + this.numeroParticula * 100;            
+            objParticulas.particulas = {};
             if ( this.aislar ) {
                 
-                objParticulas.particulas = {};
                 objParticulas.particulas = json.particles.particle[this.numeroParticula];
-                
-                // objParticulas.particulas.forEach(function(particula) {
-                    // console.log('forEach ' + particula[this.numeroParticula]);                    
+                                
                     var x = objParticulas.particulas.pasos[0].x;
                     var y = objParticulas.particulas.pasos[0].y;     
                          
                     var p = new THREE.SphereGeometry(.01, 10, 10); //(radio, ..., ...)
                     var aux = color * 111111;
                     objParticulas.color.push(aux);
-                    // 
                     var material = new THREE.MeshBasicMaterial({ color: aux });
                     var sphere = new THREE.Mesh(p, material);
-                    // 
                     sphere.position.x = parseFloat(x);
                     sphere.position.y = parseFloat(y);                
                     visualizador.scene.add(sphere);
                     objParticulas.pars.push(sphere);    
                     objParticulas.trays.push([{ "x": x, "y": y }]);//se guarda pos para las trayectorias
-                    
-                    // color += 100;
 
-
-                // });
             } else {
                 objParticulas.particulas = json.particles.particle;
                 
@@ -243,31 +232,41 @@ function Particulas(visualizador,json) {
         this.dibujaParticulas();
     }
 
-    this.setPos = function ( aislar = false, numeroParticula = null ) {
+    this.setPos = function ( aislar = false, objParticulas) {
         
+        let xP = 0.016646;
         if ( aislar == false ) {
+            var pasoID = "pos"+visualizador.id;
+            var checkID = "Checkpt1"+visualizador.id;
             
             for (var i = 0; i < this.particulas.length; i++) {
                 if (this.paso < this.particulas[i].pasos.length) {
                     var x = parseFloat(this.particulas[i].pasos[this.paso].x);
                     var y = parseFloat(this.particulas[i].pasos[this.paso].y);
-                    console.log(this.pars);
                     this.pars[i].position.setX(x);                    
                     this.pars[i].position.setY(y);
                     this.trays[i].push({ "x": x, "y": y });
-                }
+                    // this.buscaPosicion(objParticulas);
+                    // if ( xP == this.particulas[i].pasos[this.paso].x) {
+                        // console.log(objParticulas);
+                        // console.log("Paso X " + this.particulas[i].pasos[255].x);
+                        // console.log("Paso Y " + this.particulas[i].pasos[255].y);
+                        
+                        // objParticulas.color[i] = 00000;
+                        // console.log(objParticulas);
+                        
+                        // console.log("terminó particula: " + i + " en el paso " + this.paso);
+                    // } 
+                }             
                 
-
+                
             }
-            var pasoID = "pos"+visualizador.id;
-            var checkID = "Checkpt1"+visualizador.id;
-            
+            document.getElementById(pasoID).innerHTML = this.paso;
             checkbox = document.getElementById(checkID);        
             
             if (checkbox.checked == true) {
-                this.muestraTray();
+                this.muestraTray(objParticulas);
             }
-            document.getElementById(pasoID).innerHTML = this.paso;
         } else {            
 
             
@@ -294,15 +293,19 @@ function Particulas(visualizador,json) {
 
     
 
-    this.muestraTray = function () {
+    this.muestraTray = function (objParticulas) {
         
         this.trayso.forEach(function (tray) {
             visualizador.scene.remove(tray);
         });
         this.trayso = [];
+        let xP = 0.016646;
         if (checkbox.checked == true) {
             for (var i = 0; i < this.trays.length; i++) {
                 var color = this.color[i];
+
+                this.buscaPosicion(objParticulas);
+
                 var geometry = new THREE.Geometry();
                 var material = new THREE.LineBasicMaterial({ color: color });
                 for (var j = 0; j < this.trays[i].length; j++) {
@@ -402,6 +405,24 @@ function Particulas(visualizador,json) {
         })  
     }
     
+    this.buscaPosicion = function (objParticulas){
+        let xP = 0.016646;
+        for (var i = 0; i < this.particulas.length; i++) {
+            if (this.paso < this.particulas[i].pasos.length) {
+
+                if ( xP == this.particulas[i].pasos[this.paso].x) {
+                    // console.log(objParticulas);
+                    // console.log("Paso X " + this.particulas[i].pasos[255].x);
+                    // console.log("Paso Y " + this.particulas[i].pasos[255].y);
+                
+                    objParticulas.color[i] = 00000;
+                    // console.log(objParticulas);
+                
+                    // console.log("terminó particula: " + i + " en el paso " + this.paso);
+                }           
+            }    
+        }        
+    }
     
      
     //EvenListeners: Se usa Jquery para capturar los eventos
@@ -453,7 +474,7 @@ Particulas.prototype.animate = function (visualizador, objParticulas) {
             if (objParticulas.play != false) {
                 objParticulas.paso++;
                 
-                objParticulas.setPos(objParticulas.aislar, objParticulas.numeroParticula);
+                objParticulas.setPos(objParticulas.aislar, objParticulas);
                 // console.log('me invocaron');
             }
             //objParticulas.paso++;
