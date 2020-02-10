@@ -2,10 +2,8 @@ function Voronio(visualizador,json) {
     var mySelf = this;
     this.puntosred = []; //puntos (objetos)
     this.colors = {}; //colores (hexa)
-
-
+    
     this.mostrarMenu = function () {
-      $('.container-fluid').empty();
       var contenedor= "<div class='row' id='visualizador"+visualizador.id+"'"+">"+
                         " <div class='container col-sm-10' id='"+visualizador.id+"'"+"></div> " +
                          "<div class='d-none d-md-block bg-light sidebar col-sm-2' id='menu"+visualizador.id+"'"+"></div>" +

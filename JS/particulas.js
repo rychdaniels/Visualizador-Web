@@ -8,20 +8,19 @@ function Particulas(visualizador,json) {
     this.color = [];//colores
     this.trays = [];//posiciones
     this.trayso = [];//lineas
+    this.colorTrayectoria = [];
     this.play = false;
     this.aislar = false;
-    this.numeroParticula = null;
+    this.numeroParticula = null;   
 
 	
     this.mostrarMenu = function () {
-        // $('.container-fluid').empty();
         var contenedor= "<div class='row' id='visualizador"+visualizador.id+"'"+">"+
                         " <div class='container col-sm-10' id='"+visualizador.id+"'"+"></div> " +
                          "<div class='d-none d-md-block bg-light sidebar col-sm-2' id='menu"+visualizador.id+"'"+"></div>" +
                          "</div>";
         
         $('.container-fluid').append(contenedor);
-        // $('#menu').empty();
         var item = 
             "<div id = 'particulasMenu"+visualizador.id+"'"+ "class='particulasMenu' >" +
             "<h3 class='align-text-top' id='titulo'><span>Menu Particulas</span></h3>"+
@@ -201,6 +200,7 @@ function Particulas(visualizador,json) {
                     visualizador.scene.add(sphere);
                     objParticulas.pars.push(sphere);    
                     objParticulas.trays.push([{ "x": x, "y": y }]);//se guarda pos para las trayectorias
+                    
 
             } else {
                 objParticulas.particulas = json.particles.particle;
@@ -222,7 +222,7 @@ function Particulas(visualizador,json) {
                     visualizador.scene.add(sphere);
                     objParticulas.pars.push(sphere);
                     objParticulas.trays.push([{ "x": x, "y": y }]);//se guarda pos para las trayectorias
-                    
+                    console.log(objParticulas.trays);
                     color += 100;
                 });
             }
@@ -234,7 +234,7 @@ function Particulas(visualizador,json) {
 
     this.setPos = function ( aislar = false, objParticulas) {
         
-        let xP = 0.016646;
+        
         if ( aislar == false ) {
             var pasoID = "pos"+visualizador.id;
             var checkID = "Checkpt1"+visualizador.id;
@@ -246,17 +246,7 @@ function Particulas(visualizador,json) {
                     this.pars[i].position.setX(x);                    
                     this.pars[i].position.setY(y);
                     this.trays[i].push({ "x": x, "y": y });
-                    // this.buscaPosicion(objParticulas);
-                    // if ( xP == this.particulas[i].pasos[this.paso].x) {
-                        // console.log(objParticulas);
-                        // console.log("Paso X " + this.particulas[i].pasos[255].x);
-                        // console.log("Paso Y " + this.particulas[i].pasos[255].y);
-                        
-                        // objParticulas.color[i] = 00000;
-                        // console.log(objParticulas);
-                        
-                        // console.log("terminó particula: " + i + " en el paso " + this.paso);
-                    // } 
+                    
                 }             
                 
                 
@@ -272,8 +262,7 @@ function Particulas(visualizador,json) {
             
             if (this.paso < this.particulas.pasos.length) {   
                 var x = parseFloat(this.particulas.pasos[this.paso].x);
-                var y = parseFloat(this.particulas.pasos[this.paso].y);                
-                // console.log(this.pars);
+                var y = parseFloat(this.particulas.pasos[this.paso].y);                                
                 this.pars[0].position.setX(x);
                 this.pars[0].position.setY(y);
                 this.trays[0].push({ "x": x, "y": y });
@@ -282,7 +271,6 @@ function Particulas(visualizador,json) {
             var checkID = "Checkpt1"+visualizador.id;
             
             checkbox = document.getElementById(checkID);        
-            
             if (checkbox.checked == true) {
                 this.muestraTray();
             }
@@ -299,15 +287,25 @@ function Particulas(visualizador,json) {
             visualizador.scene.remove(tray);
         });
         this.trayso = [];
-        let xP = 0.016646;
+        let xP = 300;
+        // console.log(this.aislar);
         if (checkbox.checked == true) {
-            for (var i = 0; i < this.trays.length; i++) {
-                var color = this.color[i];
-
-                this.buscaPosicion(objParticulas);
+            for (var i = 0; i < this.trays.length; i++) {               
+                
+                
+                if( this.paso >= xP && this.aislar == true){
+                    this.colorTrayectoria.push(0xffffff);                    
+                    var material = new THREE.LineBasicMaterial({ color: this.colorTrayectoria });
+                    
+                } else {
+                    this.colorTrayectoria.push(this.color[i]);
+                    
+                    var material = new THREE.LineBasicMaterial({ color: this.color[i] });
+                    
+                }
 
                 var geometry = new THREE.Geometry();
-                var material = new THREE.LineBasicMaterial({ color: color });
+                
                 for (var j = 0; j < this.trays[i].length; j++) {
                     var x = this.trays[i][j].x;
                     var y = this.trays[i][j].y;
@@ -317,6 +315,7 @@ function Particulas(visualizador,json) {
                 var tray = new THREE.Line(geometry, material);
                 visualizador.scene.add(tray);
                 this.trayso.push(tray);
+                
 
             }
         }
@@ -372,7 +371,7 @@ function Particulas(visualizador,json) {
             
             return false;
         }
-        
+        this.colorTrayectoria=[];    
         nuevoVisualizador.bandera = true;
         
 
@@ -405,24 +404,21 @@ function Particulas(visualizador,json) {
         })  
     }
     
-    this.buscaPosicion = function (objParticulas){
-        let xP = 0.016646;
-        for (var i = 0; i < this.particulas.length; i++) {
-            if (this.paso < this.particulas[i].pasos.length) {
+    // this.buscaPosicion = function (objParticulas){
+    //     let xP = 1000;
+    //     console.log(this.particulas);
+    //     for (var i = 0; i < this.particulas.length; i++) {
+    //         if (this.paso < this.particulas[i].pasos.length) {
 
-                if ( xP == this.particulas[i].pasos[this.paso].x) {
-                    // console.log(objParticulas);
-                    // console.log("Paso X " + this.particulas[i].pasos[255].x);
-                    // console.log("Paso Y " + this.particulas[i].pasos[255].y);
+    //             if ( xP == this.particulas[i].pasos[this.paso].x) {
+                    
                 
-                    objParticulas.color[i] = 00000;
-                    // console.log(objParticulas);
-                
-                    // console.log("terminó particula: " + i + " en el paso " + this.paso);
-                }           
-            }    
-        }        
-    }
+    //                 objParticulas.color[i] = 00000;
+                    
+    //             }           
+    //         }    
+    //     }        
+    // }
     
      
     //EvenListeners: Se usa Jquery para capturar los eventos

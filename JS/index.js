@@ -1,8 +1,9 @@
 var visualizador;
 document.getElementById('exampleInputFile').onchange = function () {
     
-    // $('.container-fluid').empty();
+    $('.container-fluid').empty();
     if (visualizador == null) {
+        
         visualizador = new Visualizador();   
     }     
     visualizador.bandera = true;
