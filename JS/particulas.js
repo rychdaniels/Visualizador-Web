@@ -294,17 +294,17 @@ function Particulas(visualizador,json) {
                 
                 
                 if( this.paso >= xP && this.aislar == true){
-                    this.colorTrayectoria.push(0xffffff);                    
-                    var material = new THREE.LineBasicMaterial({ color: this.colorTrayectoria });
+                    this.colorTrayectoria.push(0xFFE50E);                    
                     
                 } else {
                     this.colorTrayectoria.push(this.color[i]);
                     
-                    var material = new THREE.LineBasicMaterial({ color: this.color[i] });
                     
                 }
-
+                var color =  { color: this.colorTrayectoria[this.colorTrayectoria.length-1]};
+                // { linewidth: 10, color: 0xffffff, vertexColors: THREE.VertexColors, shading: THREE.FlatShading } 
                 var geometry = new THREE.Geometry();
+                var material = new THREE.LineBasicMaterial( color );
                 
                 for (var j = 0; j < this.trays[i].length; j++) {
                     var x = this.trays[i][j].x;
