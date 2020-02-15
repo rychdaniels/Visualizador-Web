@@ -2,8 +2,10 @@ function RedPorosa (visualizador,json){
   var mySelf = this;
   this.redporosa = [];
   this.colorsp = {};
+  
+
   this.mostrarMenu = function () {
-    $('.container-fluid').empty();
+  
     // "<h3 class='align-text-top' id='titulo'><span>Menu Red Porosa</span></h3>" +
     var contenedor= "<div class='row' id='visualizador"+visualizador.id+"'"+">"+
                         " <div class='container col-sm-10' id='"+visualizador.id+"'"+"></div> " +
