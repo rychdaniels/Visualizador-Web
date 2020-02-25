@@ -222,7 +222,6 @@ function Particulas(visualizador,json) {
                     visualizador.scene.add(sphere);
                     objParticulas.pars.push(sphere);
                     objParticulas.trays.push([{ "x": x, "y": y }]);//se guarda pos para las trayectorias
-                    console.log(objParticulas.trays);
                     color += 100;
                 });
             }
@@ -287,31 +286,32 @@ function Particulas(visualizador,json) {
             visualizador.scene.remove(tray);
         });
         this.trayso = [];
+        var vertices = [];
+        var color = new THREE.Color();
         let xP = 300;
         // console.log(this.aislar);
         if (checkbox.checked == true) {
-            for (var i = 0; i < this.trays.length; i++) {               
+            for (var i = 0; i < this.trays.length; i++) {    
                 
+                var geometry = new THREE.BufferGeometry();
                 
-                if( this.paso >= xP && this.aislar == true){
-                    this.colorTrayectoria.push(0xFFE50E);                    
-                    
-                } else {
-                    this.colorTrayectoria.push(this.color[i]);
-                    
-                    
-                }
-                var color =  { color: this.colorTrayectoria[this.colorTrayectoria.length-1]};
-                // { linewidth: 10, color: 0xffffff, vertexColors: THREE.VertexColors, shading: THREE.FlatShading } 
-                var geometry = new THREE.Geometry();
-                var material = new THREE.LineBasicMaterial( color );
                 
                 for (var j = 0; j < this.trays[i].length; j++) {
                     var x = this.trays[i][j].x;
                     var y = this.trays[i][j].y;
-                    geometry.vertices.push(new THREE.Vector3(x, y, 0));
-
+                    vertices.push(x, y, 0);
+                    
+                    color.setHSL( 0.6, 1.0, Math.max( 0, -x / 200 ) + 0.5 );
+                    this.colorTrayectoria.push(color.r, color.g, color.b);
+                    
+                    
+                    // geometry.vertices.push(new THREE.Vector3(x, y, 0));
+                    
                 }
+                geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
+                geometry.addAttribute( 'color', new THREE.Float32BufferAttribute( this.colorTrayectoria, 3 ) );
+                var material = new THREE.LineBasicMaterial( {color: 0xffffff, vertexColors: THREE.VertexColors} );
+
                 var tray = new THREE.Line(geometry, material);
                 visualizador.scene.add(tray);
                 this.trayso.push(tray);
