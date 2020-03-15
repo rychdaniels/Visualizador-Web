@@ -24,6 +24,13 @@ h3{
   border: .05rem solid #000;
 }
 
+/* Boton para generar la grafica  */
+.btn-grafica {
+  margin-left: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 
 /*
  * Base structure
@@ -48,7 +55,7 @@ body {
 
 
 .cover-container, .container {
-  max-width: 110em;
+  max-width: 95em;
   
 }
 #titulo, #menu{
@@ -67,10 +74,6 @@ body {
   padding: 0;
   margin: 0;
   background: lightgray;
-  text-align: center;
-  width: 90em;
-  height: 800px; 
-  display: block;
   float: left;
   
 }
@@ -133,7 +136,7 @@ a:hover {
   width: 0px;
   /*z-index: 100; /* Behind the navbar */
   /*padding: 48px 0 0; /* Height of navbar */
-  text-align: left;
+  
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
   overflow-x: hidden;
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
@@ -154,11 +157,13 @@ a:hover {
 
 
 .sidebar, .particulasMenu /* .nav-link*/ {  
-  float: right;
+  
   font-weight: 400;
   font-size: 18px;
   color: #00802b;
-  width: 245px;
+  overflow-y: hidden;
+  padding: 0px;
+  
 }
 
 .sidebar #titulo{

@@ -281,9 +281,11 @@ function Particulas(visualizador,json) {
                 
                 
             }
+            var pasoID = "pos"+visualizador.id;
+            var checkID = "Checkpt1"+visualizador.id;
             //Se muestran cada uno de los pasos recorridos en el navegador
             document.getElementById(pasoID).innerHTML = this.paso;
-            checkbox = document.getElementById(checkID);        
+            checkbox = document.getElementById(checkID);  
             
             //Si Trayectoria esta marcado, se mostraran las traqyectorias de las particulas
             if (checkbox.checked == true) {
@@ -336,7 +338,7 @@ function Particulas(visualizador,json) {
                         var x = this.trays[i][j].x;
                         var y = this.trays[i][j].y;
                         vertices.push( x, y, 0);
-                        if(i < xP){
+                        if(j < xP){
                             // Color de la linea: Rojo
                             colorLinea.push( 255, 0, 0 );
                         } else{
@@ -406,7 +408,7 @@ function Particulas(visualizador,json) {
       this.aislar = true;      
       this.setPos(this.aislar, this.numeroParticula);
       visualizador.renderer.render(visualizador.scene, visualizador.camera);
-    }      
+    }   
     
     
     /**
@@ -442,6 +444,9 @@ function Particulas(visualizador,json) {
                                 "<button class='btn btn-danger btn-titulo col-sm-4' id='quitar"+nuevoVisualizador.id+"'> Quitar </button>" +
                             "</div>"           
                         "</div>";        
+        var btnGrafica = "<div class='btn-grafica'>" +
+                            "<button  type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModalCenter' id='btngrafica"+nuevoVisualizador.id+"'> Generar grafica </button>" 
+                        + "</div>";
         //Se crea el objeto en es te caso de tipo Particula
         object =  eval("new " + json.name + "(nuevoVisualizador,json)");
         //Se indica que la particula sera aislada
@@ -454,8 +459,55 @@ function Particulas(visualizador,json) {
         // console.log('nuevoVisualizador' + nuevoVisualizador.id);
         //Agregamos el nuevo visualizador al nevagdor
         $('#visualizador'+nuevoVisualizador.id).before(nuevoItem); 
-        $('#aislaParticula'+nuevoVisualizador.id).remove();
+        $('#aislaParticula'+nuevoVisualizador.id).remove();//Quitamos los elementos que no deben estar en menus hijos
+        $('#pos'+nuevoVisualizador.id).parent().parent().after(btnGrafica);//Boron encargado de generar la grafica de la particula
         
+        //Envento click para el boton que genera la grafica
+        $('#btngrafica'+nuevoVisualizador.id).click(function(){
+            //Variable que guarda la estructura del modal encargado de mostrar la grafica de la particula
+            var modal = "<div class='modal fade ' id='exampleModalCenter' tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true'>" +
+            "<div class='modal-dialog modal-lg' role='document'>"+
+              "<div class='modal-content'>"+
+                "<div class='modal-header'>"+
+                  "<h5 class='modal-title' id='exampleModalLongTitle'>Particula "+particula+": Grafica de Lineas</h5>"+
+                  "<button type='button' class='close' data-dismiss='modal' aria-label='Close'>"+
+                    "<span aria-hidden='true'>&times;</span>"+
+                  "</button>"+
+                "</div>"+
+                "<div class='modal-body '>"+
+                    "<canvas id='myChart"+nuevoVisualizador.id+"' width='1000' height='700'></canvas>"+                    
+                "</div>"+
+                "<div class='modal-footer'>"+
+                  "<button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>"+                  
+                "</div>"+
+              "</div>"+
+            "</div>"+
+          "</div>";
+
+          //Agregamos al DOM el modal
+          $('.container-fluid').append(modal);
+          //Arreglos que almacenan los puntos donde toca la particula 
+          let RBarrierX = [];
+          let RBarrierY = [];
+          let LBarrierX = [];
+          let LBarrierY = [];
+          for (let i= 0; i < 80; i++ ){
+            var aleatorio = Math.round(Math.random()*100);
+            RBarrierX.push(aleatorio*5);
+            RBarrierY.push(aleatorio*2+1);
+            LBarrierX.push(aleatorio+1);
+            LBarrierY.push(aleatorio*3+2);
+          }
+        
+        //Obtenemos el canvas que se ha creado en la variable modal, este canvas servira para poder pintar el modal
+        let canvas = document.getElementById('myChart'+nuevoVisualizador.id).getContext('2d');
+        
+        //Creamos un nuevo graficador y pasamos los parametros necesarios
+        new graficador(RBarrierX,RBarrierY,LBarrierX,LBarrierY, canvas);
+            
+            
+         });
+
         //Con ayuda de Jquery capturamos el evento cuando el usuario desee elminar el visualizador
         //del navegador
         $('#quitar'+nuevoVisualizador.id).click(function(){
@@ -470,7 +522,7 @@ function Particulas(visualizador,json) {
                 return false;
             }
             
-        })  
+        });
     }
     
      
@@ -494,8 +546,7 @@ function Particulas(visualizador,json) {
             if($(this).is(":checked")){
                 mySelf.muestraTray();
             }
-        }),        
-
+        }),       
       
         $('#aceptar').click(function(e){
             
@@ -509,6 +560,7 @@ function Particulas(visualizador,json) {
                 $('#particula').val('');//Limpiamos el campo para poder ingresar otra particula     
             }
         }),
+        
     );
 }
 
