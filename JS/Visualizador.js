@@ -30,7 +30,7 @@ function Visualizador() {
 Visualizador.prototype.creaEscena = function (elemento) {   
     var aspect = elemento.clientWidth / elemento.clientHeight;
     
-    this.renderer.setSize(elemento.clientWidth, elemento.clientHeight - 20);
+    this.renderer.setSize(elemento.clientWidth -30 , elemento.clientHeight - 20);
 
 
     //Crea la escena donde se mostrara la visualizacion
